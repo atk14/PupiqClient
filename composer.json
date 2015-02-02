@@ -1,0 +1,22 @@
+{
+        "name": "atk14/pupiq-client",
+        "type": "library",
+        "description": "Pupiq client for ATK14 applications",
+        "keywords": ["atk14", "image", "images", "pupiq"],
+        "homepage": "https://github.com/atk14/PupiqClient",
+        "license": ["MIT"],
+        "authors": [
+                {
+                        "name": "Jaromir Tomek",
+                        "homepage": "https://github.com/yarri"
+                }
+        ],
+        "require": {
+                "php": ">=5.0.0"
+        },
+        "require-dev": {
+        },
+        "autoload": {
+                "classmap": ["src/lib"]
+        }
+}
