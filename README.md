@@ -7,21 +7,15 @@ Installation
 ------------
 
 Just use the Composer:
-
 ```
 $ cd path/to/your/atk14/project/
 $ php composer.phar require atk14/pupiq-client dev-master
 
-$ ln -s vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/
-$ ln -s vendor/atk14/pupiq-client/src/app/wigets/pupiq_image_input.php app/wigets/
-$ ln -s vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/
-$ ln -s vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/
-```
-
-Write your PUPIQ API KEY into config/settings.php
-
-```php
-define("PUPIQ_API_KEY","1234567890abcdefghijklmopqrst");
+$ ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq.php lib/pupiq.php
+$ ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
+$ ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
+$ ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
+$ ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
 ```
 
 If you haven't yet the Composer installed, run the following commands
@@ -29,3 +23,35 @@ If you haven't yet the Composer installed, run the following commands
 $ cd path/to/your/atk14/project/
 $ curl -sS https://getcomposer.org/installer | php
 ```
+
+Configuration
+------------
+
+Write your PUPIQ API KEY into config/settings.php
+```php
+define("PUPIQ_API_KEY","1234567890abcdefghijklmopqrst");
+```
+
+Usage in templates
+------------------
+
+Consider an image in the original resolution 800x600. In the string variable $img there is URL to the image.
+
+```smarty
+To preserve aspect ratio
+{!$img|pupiq_img:"80"} {* 80x60 *}
+{!$img|pupiq_img:"x30"} {*  40x30 *}
+{!$img|pupiq_img:"80x80"} {*  80x60 *}
+ 
+To crop the image
+{!$img|pupiq_img:"!80x80"} {* 80x80 *}
+{!$img|pupiq_img:"80x80xcrop"} {* 80x80 *}
+ 
+To magnify
+{!$img|pupiq_img:"1600x1600"} {* 800x600, i.e. there is no magnification by default *}
+{!$img|pupiq_img:"1600x1600,enable_enlargement"} {* 1600x1200 *}
+ 
+To render URL to an image
+<img src="{$img|img_url:"!80x80"}" width="80" height="80">
+```
+
