@@ -7,21 +7,21 @@ Installation
 ------------
 
 Just use the Composer:
-```
-$ cd path/to/your/atk14/project/
-$ php composer.phar require atk14/pupiq-client dev-master
+```bash
+cd path/to/your/atk14/project/
+php composer.phar require atk14/pupiq-client dev-master
 
-$ ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq.php lib/pupiq.php
-$ ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
-$ ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
-$ ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
-$ ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
+ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq.php lib/pupiq.php
+ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
+ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
+ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
+ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
 ```
 
 If you haven't yet the Composer installed, run the following commands
-```
-$ cd path/to/your/atk14/project/
-$ curl -sS https://getcomposer.org/installer | php
+```bash
+cd path/to/your/atk14/project/
+curl -sS https://getcomposer.org/installer | php
 ```
 
 Configuration
