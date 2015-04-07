@@ -52,7 +52,8 @@ To magnify
 {!$img|pupiq_img:"1600x1600"} {* 800x600, i.e. there is no magnification by default *}
 {!$img|pupiq_img:"1600x1600,enable_enlargement"} {* 1600x1200 *}
  
-To render URL to an image
-<img src="{$img|img_url:"!80x80"}" width="80" height="80">
+To render a <img> tag by hand
+<img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
+<img {$img|img_attrs:"80x80"} alt="a nice butterfly">
 ```
 
