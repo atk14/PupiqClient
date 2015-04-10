@@ -56,8 +56,11 @@ class Pupiq {
 		}elseif(file_exists($url_or_filename)){
 
 			// obrazek je urcen souborem
-			//$post_data["image"] = "@$url_or_filename"; // an old, deprecated way
-			$post_data["image"] = new CURLFile($url_or_filename);
+			if (class_exists("CURLFile")) {
+				$post_data["image"] = new CURLFile($url_or_filename);
+			} else {
+				$post_data["image"] = "@$url_or_filename"; // an old, deprecated way
+			}
 		}else{
 
 			// wtf?
