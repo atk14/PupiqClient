@@ -89,9 +89,9 @@ class Pupiq {
 	}
 
 	/**
-	 * $attachment = Pupiq::CreateAttachment("/path/to/file.pdf"); // an instance of PupiqAttachment
+	 * $attachment = Pupiq::CreateAttachment("/path/to/file.pdf","sample.pdf"); // an instance of PupiqAttachment
 	 */
-	static function CreateAttachment($filename,&$err_msg = ""){
+	static function CreateAttachment($path_to_file,$filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
 		$lang = $pupiq->getLang();
 
@@ -111,13 +111,14 @@ class Pupiq {
 			"format" => "json",
 		);
 
-		if(!file_exists($filename)){
+		if(!file_exists($path_to_file)){
 			// wtf?
-			$err_msg = "File $filename doesn't exist";
+			$err_msg = "File $path_to_file doesn't exist";
 			return null;
 		}
 
-		$post_data["attachment"] = new CURLFile($filename);
+		$post_data["attachment"] = new CURLFile($path_to_file);
+		$post_data["filename"] = $filename;
 
 		// Data+Files to be posted
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
