@@ -12,6 +12,6 @@ class PupiqAttachmentField extends FileField{
 			return array($err_msg,null);
 		}
 
-		return array(null,$attachment->getUrl());
+		return array(null,$attachment);
 	}
 }

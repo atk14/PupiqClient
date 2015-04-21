@@ -22,7 +22,7 @@ class PupiqAttachment{
 	 * echo $attachment->getSuffix(); // "pdf"
 	 */
 	function getSuffix(){
-		if(preg_match('\.([^\.]+)$',$this->getUrl(),$matches)){
+		if(preg_match('/\.([^\.]+)$/',$this->getUrl(),$matches)){
 			return $matches[1];
 		}
 	}
@@ -31,7 +31,8 @@ class PupiqAttachment{
 	 * echo $attachment->getFilesize(); // 123454
 	 */
 	function getFilesize(){
-		if(preg_match('/\/(\d+)\/[^\/]+/',$this->getUrl(),$matches)){
+		// "http://i.pupiq.net/a/c/c/2/2/15257/sample.pdf" -> 15257
+		if(preg_match('/\/(\d+)\/[^\/]+$/',$this->getUrl(),$matches)){
 			return $matches[1];
 		}
 	}
@@ -45,7 +46,7 @@ class PupiqAttachment{
 			"png" => "image/png",
 			"pdf" => "application/pdf",
 		);
-		$suffix = $this->getSuffix();
+		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
 			return $mime_types[$suffix];
 		}
