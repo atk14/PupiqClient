@@ -84,10 +84,58 @@ class Pupiq {
 			return;
 		}
 
-
-
 		$pupiq->setUrl($json["url"]);
 		return $pupiq;
+	}
+
+	/**
+	 * $attachment = Pupiq::CreateAttachment("/path/to/file.pdf"); // an instance of PupiqAttachment
+	 */
+	static function CreateAttachment($filename,&$err_msg = ""){
+		$pupiq = new Pupiq();
+		$lang = $pupiq->getLang();
+
+		$url = PUPIQ_API_URL."$lang/attachments/create_new/";
+
+		// Initialize cURL
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		// Pass TRUE or 1 if you want to wait for and catch the response against the request made
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// For Debug mode; shows up any error encountered during the operation
+		//curl_setopt($ch, CURLOPT_VERBOSE, 1);
+
+		$post_data = array(
+			"auth_token" => $pupiq->getAuthToken(),
+			"format" => "json",
+		);
+
+		if(!file_exists($filename)){
+			// wtf?
+			$err_msg = "File $filename doesn't exist";
+			return null;
+		}
+
+		$post_data["attachment"] = new CURLFile($filename);
+
+		// Data+Files to be posted
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+		// Execute the request
+		$response = curl_exec($ch);
+		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		//var_dump($response);
+		//var_dump($status_code);
+		$json = json_decode($response,true);
+
+		if($status_code>=300){
+			$err_msg = isset($json[0]) ? $json[0] : "Unknown error";
+			$err_msg = preg_replace('/^attachment: /','',$err_msg); // "attachment: Podivná příloha" -> "Podivná příloha"
+			return;
+		}
+
+		return new PupiqAttachment($json["url"]);
 	}
 
 	function getLang(){ return "cs"; }
@@ -126,7 +174,7 @@ class Pupiq {
 	function getImgTag($geometry = null,$options = array()){
 		$options += array(
 			"alt" => "Image",
-			"attrs" => array() 
+			"attrs" => array()
 		);
 
 		$this->setGeometry($geometry);
@@ -188,7 +236,7 @@ class Pupiq {
 	function setTransformation($transformation_string){
 		$transformation_string = trim($transformation_string);
 		if(!$transformation_string){ return $this->getTransformation(); }
-		
+
 		$options = array();
 		if(preg_match('/^(.+?),(.+)/',$transformation_string,$matches)){
 			$transformation_string = $matches[1];
@@ -264,7 +312,7 @@ class Pupiq {
 				$border = strtolower(preg_replace('/^#/','',$border)); // "#FFFFFF" -> "ffffff"
 			}
 			$transformation_string = $this->getWidth()."x".$this->getHeight()."x$border";
-		
+
 		}else{
 			throw new Exception("Pupiq: Invalid image transformation: $transformation_string");
 		}
@@ -371,7 +419,7 @@ class Pupiq {
 		));
 	}
 
-	function getId(){ return $this->toString(); } // pro TableRecord & DbMole, TODO: to be removed 
+	function getId(){ return $this->toString(); } // pro TableRecord & DbMole, TODO: to be removed
 	function toString(){ return $this->getUrl(); }
 	function __toString(){ return $this->toString(); }
 }
