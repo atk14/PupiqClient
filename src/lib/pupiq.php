@@ -385,7 +385,17 @@ class Pupiq {
 
 	function getUserId(){
 		preg_match('/^(\d+)./',$this->getApiKey(),$matches);
-		return $matches[1];
+		return (int)$matches[1];
+	}
+
+	/**
+	 * Id, pod kterym je obrazek ulozen v Pupiqove db
+	 */
+	function getImageId(){
+		// http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_52fa2ef3361053ff.jpg -> 75c1 -> 30145
+		if(preg_match('/^https?:\/\/[^\/]+\/i\/[0-9a-f]+\/[0-9a-f]+\/[0-9a-f]+\/([0-9a-f]+)\//',$this->getUrl(),$matches)){
+			return (int)hexdec($matches[1]);
+		}
 	}
 
 	/**
