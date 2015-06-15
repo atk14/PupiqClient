@@ -117,7 +117,7 @@ class Pupiq {
 			return null;
 		}
 
-		$post_data["attachment"] = new CURLFile($path_to_file);
+		$post_data["attachment"] = class_exists("CURLFile") ? new CURLFile($path_to_file) : "@$path_to_file";
 		$post_data["filename"] = $filename;
 
 		// Data+Files to be posted
