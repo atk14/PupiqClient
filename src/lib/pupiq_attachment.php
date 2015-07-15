@@ -44,6 +44,19 @@ class PupiqAttachment{
 		static $mime_types = array(
 			"jpg" => "image/jpeg",
 			"png" => "image/png",
+			"tiff" => "image/tiff",
+			"giff" => "image/giff",
+			"svg" => "image/svg+xml",
+			"bmp" => "image/bmp",
+
+			"doc" => "application/msword",
+			"xls" => "application/vnd.ms-excel",
+
+			"odt" => "application/vnd.oasis.opendocument.text",
+			"ods" => "application/vnd.oasis.opendocument.spreadsheet",
+
+			"eps" => "application/postscript",
+			"ai" => "application/postscript",
 			"pdf" => "application/pdf",
 		);
 		$suffix = strtolower($this->getSuffix());
