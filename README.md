@@ -56,6 +56,6 @@ To magnify
  
 To render a <img> tag by hand
 <img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
-<img {$img|img_attrs:"80x80"} alt="a nice butterfly">
+<img {!$img|img_attrs:"80x80"} alt="a nice butterfly">
 ```
 
