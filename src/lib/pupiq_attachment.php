@@ -58,6 +58,8 @@ class PupiqAttachment{
 			"eps" => "application/postscript",
 			"ai" => "application/postscript",
 			"pdf" => "application/pdf",
+
+			"zip" => "application/zip",
 		);
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
