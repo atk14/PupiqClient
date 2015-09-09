@@ -5,6 +5,7 @@ class PupiqAttachment{
 	function __construct($url){
 		// pokud to vypada jako zname URL, vrazime tam spravny hostname
 		if(preg_match('/^https?:\/\/[^\/]+(\/a\/.+)$/',$url,$matches)){
+			assert(class_exists("Pupiq")); // autoload tridy Pupiq (tam jsou totiz definovany potrebne konstanty PUPIQ_*)
 			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
 			$url = "http://$hostname$matches[1]";
 		}
