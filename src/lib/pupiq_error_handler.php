@@ -28,7 +28,7 @@ class PupiqErrorHandler{
 			return;
 		}
 
-		$ar = split('/',$uri);
+		$ar = explode('/',$uri);
 
 		$file = array_pop($ar); // ezaK3E_480x270_edd9bf26cbe7ce4e.jpg
 		$dir = join("/",$ar);
