@@ -3,6 +3,7 @@
 @define("PUPIQ_API_URL","http://i.pupiq.net/api/");
 @define("PUPIQ_LANG","cs");
 @define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
+@define("PUPIQ_PROXY_HOSTNAME","");
 
 class Pupiq {
 	var $_api_key = "";
@@ -156,7 +157,8 @@ class Pupiq {
 		// http://pupiq_srv.localhost/i/1/1/9/9/2000x1600/xlfbAz_800x600_94256fa57005d815.jpg
 		// http://pupiq_srv.localhost/i/1/1/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
 		if(preg_match('/^http:\/\/[^\/]+(?<base_uri>\/i\/([0-9a-f]+\/){4}(?<original_width>\d+)x(?<original_height>\d+)\/)(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)(?<border>(|xc|xt|x[0-9a-f]{6}))_[0-9a-f]{16}\.(?<suffix>jpg|png)$/',$url,$matches)){
-			$this->_base_href = 'http://'.PUPIQ_IMG_HOSTNAME.$matches["base_uri"];
+			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
+			$this->_base_href = 'http://'.$hostname.$matches["base_uri"];
 			$this->_original_width = (int)$matches["original_width"];
 			$this->_original_height = (int)$matches["original_height"];
 			$this->_width = $matches["width"];
