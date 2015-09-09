@@ -4,7 +4,7 @@ class PupiqAttachment{
 
 	function __construct($url){
 		// pokud to vypada jako zname URL, vrazime tam spravny hostname
-		if(preg_match('/^https?:\/\/[^\/]+(\/a\/.+)/',$url,$matches)){
+		if(preg_match('/^https?:\/\/[^\/]+(\/a\/.+)$/',$url,$matches)){
 			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
 			$url = "http://$hostname$matches[1]";
 		}
