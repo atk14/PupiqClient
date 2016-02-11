@@ -52,7 +52,7 @@ class PupiqAttachment{
 			"jpg" => "image/jpeg",
 			"png" => "image/png",
 			"tiff" => "image/tiff",
-			"giff" => "image/giff",
+			"gif" => "image/gif",
 			"svg" => "image/svg+xml",
 			"bmp" => "image/bmp",
 
