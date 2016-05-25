@@ -52,7 +52,7 @@ Consider an image in the original resolution 800x600. In the string variable $im
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon'"}
 
     To add some attributes prepared as array (got from a controller for example)
-    ```
+
     class SomeController extends ApplicationController {
     ....
         $this->tpl_data["image_attributes_array"] = array(
@@ -61,7 +61,7 @@ Consider an image in the original resolution 800x600. In the string variable $im
         );
     ....
     }
-    ```
+
     {!$img|pupiq_img:"80x80,enable_enlargement":$image_attributes_array}
 
     To magnify
