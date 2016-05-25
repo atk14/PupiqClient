@@ -21,15 +21,17 @@ function smarty_modifier_pupiq_img($url,$geometry = "100",$attrs=null){
 	}
 	$attrsAr = array();
 
-	# muzeme poslat dalsi atributy jako retezec => "class='image image-warning'|title='Warning sign'"
+	# muzeme poslat dalsi atributy jako retezec => "class='image image-warning',title='Warning sign'"
 	if ($attrs=trim($attrs)) {
 		if (is_string($attrs)) {
 			$_attrs = preg_split("/,/",$attrs);
 			array_walk($_attrs, function($v,$k) use (&$attrsAr) {
 				list($k,$v) = preg_split("/=/", $v);
+				$k = trim($k);
+				$v = trim($v);
 				# remove quotes from value
 				if (preg_match("/^[\"'](.+)[\"']$/", $v, $m)) {
-					$v = $m[1];
+					$v = trim($m[1]);
 				}
 				$attrsAr[$k]=$v;
 			});
