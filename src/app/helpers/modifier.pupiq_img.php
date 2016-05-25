@@ -1,14 +1,14 @@
 <?php
 /**
  * Smarty modifier to render img tag using image from Pupiq
- * More info na https://secure.orbit41.com:441/en/wiki/pupiq/
+ * More info at https://github.com/atk14/PupiqClient
  * @package Pupiq
  * @package Helpers
  */
 
 /**
  * Smarty modifier to render img tag using image from Pupiq
- * More info at https://secure.orbit41.com:441/en/wiki/pupiq/
+ * More info at https://github.com/atk14/PupiqClient#usage-in-templates
  *
  * @param string $url
  * @param string $geometry
