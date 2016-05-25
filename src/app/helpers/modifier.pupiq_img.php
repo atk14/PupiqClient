@@ -12,15 +12,13 @@
  *
  * @param string $url
  * @param string $geometry
- * @param ApiUser $user
  * @param string $attrs
  */
-function smarty_modifier_pupiq_img($url,$geometry = "100",$user = null,$attrs=null){
+function smarty_modifier_pupiq_img($url,$geometry = "100",$attrs=null){
 	if(!$url){ return; }
 	if(is_object($url)){
 		$url = $url->getUrl();
 	}
-	$api_key = isset($user) ? $user->getApiKey() : null;
 	$attrsAr = array();
 
 	# muzeme poslat dalsi atributy jako retezec => "class='image image-warning'|title='Warning sign'"
@@ -37,6 +35,6 @@ function smarty_modifier_pupiq_img($url,$geometry = "100",$user = null,$attrs=nu
 			});
 		}
 	}
-	$p = new Pupiq($url,$api_key);
+	$p = new Pupiq($url);
 	return $p->getImgTag($geometry, array("attrs" => $attrsAr));
 }
