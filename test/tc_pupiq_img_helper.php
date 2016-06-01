@@ -18,7 +18,6 @@ class TcPupiqImgHelper extends TcBase {
 
 
 		$out = smarty_modifier_pupiq_img($image, "800x600", array('class' => 'banner-small', 'title' => 'Obrazek'));
-		var_dump($out);
 		$this->assertEquals('<img class="banner-small" title="Obrazek" src="http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_b1ae08e7e3612505.jpg" alt="Image" width="800" height="536" />', $out);
 	}
 }
