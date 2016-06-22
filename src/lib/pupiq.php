@@ -309,6 +309,12 @@ class Pupiq {
 			$border = $matches[3]; // transparent, #ffffff...
 			if($border=="crop"){
 				$border = "c";
+				if(in_array("top",$options)){
+					$border = "ct";
+				}
+				if(in_array("bottom",$options)){
+					$border = "cb";
+				}
 			}elseif($border=="transparent"){
 				$border = "t";
 			}else{

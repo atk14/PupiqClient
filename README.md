@@ -48,6 +48,10 @@ Consider an image in the original resolution 800x600. In the string variable $im
     {!$img|pupiq_img:"!80x80"} {* 80x80 *}
     {!$img|pupiq_img:"80x80xcrop"} {* 80x80 *}
 
+    Top crop image to the top or bottom line
+    {!$img|pupiq_img:"80x80xcrop,top"} {* 80x80 *}
+    {!$img|pupiq_img:"80x80xcrop,bottom"} {* 80x80 *}
+
     To add some attributes to img tag
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon'"}
 
@@ -76,3 +80,5 @@ License
 -------
 
 Pupiq Client is free software distributed [under the terms of the MIT license](http://www.opensource.org/licenses/mit-license)
+
+<!-- vim: set et: -->
