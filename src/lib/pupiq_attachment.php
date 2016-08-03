@@ -58,6 +58,7 @@ class PupiqAttachment{
 
 			"doc" => "application/msword",
 			"xls" => "application/vnd.ms-excel",
+			"ppt" => "application/vnd.ms-powerpoint",
 
 			"docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 
@@ -69,6 +70,8 @@ class PupiqAttachment{
 			"pdf" => "application/pdf",
 
 			"zip" => "application/zip",
+
+			"mp3" => "audio/mpeg",
 		);
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
