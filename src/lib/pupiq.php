@@ -32,61 +32,44 @@ class Pupiq {
 
 	static function CreateImage($url_or_filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
-		$lang = $pupiq->getLang();
 
-		$url = PUPIQ_API_URL."$lang/images/create_new/";
-
-		// Initialize cURL
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		// Pass TRUE or 1 if you want to wait for and catch the response against the request made
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		// For Debug mode; shows up any error encountered during the operation
-		//curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-		$post_data = array(
+		$params = array(
 			"auth_token" => $pupiq->getAuthToken(),
-			"format" => "json",
 		);
+		$options = array(
+			"acceptable_error_codes" => array(400),
+		);
+		$file = null;
 
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
 		if(preg_match('/^https?:/',$url_or_filename)){
-
-			// obrazek je urcen URL
-			$post_data["url"] = $url_or_filename;
-		}elseif(file_exists($url_or_filename)){
-
-			// obrazek je urcen souborem
-			if (class_exists("CURLFile")) {
-				$post_data["image"] = new CURLFile($url_or_filename);
-			} else {
-				$post_data["image"] = "@$url_or_filename"; // an old, deprecated way
-			}
+			$params["url"] = $url_or_filename;
+			$data = $adf->post("images/create_new",$params,$options);
 		}else{
-
-			// wtf?
-			$err_msg = "Unexpected image content";
-			return null;
+			$data = $adf->postFile("images/create_new",$url_or_filename,$params,$options);
 		}
 
-		// Data+Files to be posted
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-		// Execute the request
-		$response = curl_exec($ch);
-		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		//var_dump($response);
-		//var_dump($status_code);
-		$json = json_decode($response,true);
-
-		if($status_code>=300){
-			$err_msg = isset($json[0]) ? $json[0] : "Unknown error";
-			$err_msg = preg_replace('/^image: /','',$err_msg); // "image: Obrázek musí být ve formátu jpg" -> "Obrázek musí být ve formátu jpg"
+		if(!$data){
+			$err_msg = $pupiq->_extractApiDataFetcherError($adf);
 			return;
 		}
 
-		$pupiq->setUrl($json["url"]);
+		$pupiq->setUrl($data["url"]);
 		return $pupiq;
+	}
+
+	/**
+	 * $err_msg = $this->_extractApiDataFetcherError($api_data_fetcher);
+	 */
+	protected function _extractApiDataFetcherError($adf){
+		$err_msg = _("Unknown error");
+
+		$errors = $adf->getErrors();
+		if(isset($errors[0]) && strlen($_err = trim($errors[0]))){
+			$err_msg = $_err;
+		}
+		$err_msg = preg_replace('/^(image|attachment|auth_token): /','',$err_msg); // "image: Tiff format is not supported" -> "Tiff format is not supported"; "attachment: A very strange file" -> "A very strange file"
+		return $err_msg;
 	}
 
 	/**
@@ -94,50 +77,23 @@ class Pupiq {
 	 */
 	static function CreateAttachment($path_to_file,$filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
-		$lang = $pupiq->getLang();
 
-		$url = PUPIQ_API_URL."$lang/attachments/create_new/";
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$data = $adf->postFile("attachments/create_new",array(
+			"path" => $path_to_file,
+			"name" => $filename 
+		),array(
+			"auth_token" => $pupiq->getAuthToken()
+		),array(
+			"acceptable_error_codes" => array(400)
+		));
 
-		// Initialize cURL
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		// Pass TRUE or 1 if you want to wait for and catch the response against the request made
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		// For Debug mode; shows up any error encountered during the operation
-		//curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-		$post_data = array(
-			"auth_token" => $pupiq->getAuthToken(),
-			"format" => "json",
-		);
-
-		if(!file_exists($path_to_file)){
-			// wtf?
-			$err_msg = "File $path_to_file doesn't exist";
-			return null;
-		}
-
-		$post_data["attachment"] = class_exists("CURLFile") ? new CURLFile($path_to_file) : "@$path_to_file";
-		$post_data["filename"] = $filename;
-
-		// Data+Files to be posted
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-		// Execute the request
-		$response = curl_exec($ch);
-		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		//var_dump($response);
-		//var_dump($status_code);
-		$json = json_decode($response,true);
-
-		if($status_code>=300){
-			$err_msg = isset($json[0]) ? $json[0] : "Unknown error";
-			$err_msg = preg_replace('/^attachment: /','',$err_msg); // "attachment: Podivná příloha" -> "Podivná příloha"
+		if(!$data){
+			$err_msg = $pupiq->_extractApiDataFetcherError($adf);
 			return;
 		}
 
-		return new PupiqAttachment($json["url"]);
+		return new PupiqAttachment($data["url"]);
 	}
 
 	function getLang(){ return "cs"; }

@@ -12,7 +12,8 @@
                 }
         ],
         "require": {
-                "php": ">=5.0.0"
+                "php": ">=5.0.0",
+                 "atk14/api-data-fetcher": "dev-master"
         },
         "require-dev": {
         },
