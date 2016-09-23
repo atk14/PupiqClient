@@ -4,14 +4,14 @@ class PupiqErrorHandler{
 	static function HandleRequest($request,&$response){
 		$directory = ATK14_DOCUMENT_ROOT;
 
-		assert(class_exists("Pupiq")); // autoload tridy Pupiq (tam jsou totiz definovany potrebne konstanty PUPIQ_*)
+		class_exists("Pupiq"); // autoload tridy Pupiq (tam jsou totiz definovany potrebne konstanty PUPIQ_*)
 		
 		$uri = $request->getRequestUri();
 		$uri = preg_replace('/\/{2,}/','/',$uri); // /i/d///d/8ac///8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg -> /i/d/d/8ac/8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg
 		$uri = preg_replace('/\?.*/','',$uri); // /i/d/d/8ac/8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg?xxxx -> /i/d/d/8ac/8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg
 		$uri = preg_replace('/[^\/]+\/\.\.\//','/',$uri); // /i/../i/d/d/8ac/8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg -> /i/d/d/8ac/8ac/800x450/ezaK3E_480x270_edd9bf26cbe7ce4e.jpg
 
-		assert(preg_match('/^\/(i|a)\//',$uri)); // takova bezp. pojistka
+		if(!preg_match('/^\/(i|a)\//',$uri)){ throw new Exception("PupiqErrorHandler: Invalid URI"); } // takova bezp. pojistka
 
 		$url = "http://".PUPIQ_IMG_HOSTNAME.$uri;
 		$uf = new UrlFetcher($url);
