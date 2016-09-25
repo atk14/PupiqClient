@@ -1,9 +1,10 @@
 <?php
-@define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
-@define("PUPIQ_API_URL","http://i.pupiq.net/api/");
-@define("PUPIQ_LANG","cs");
-@define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
-@define("PUPIQ_PROXY_HOSTNAME","");
+defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
+defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","http://i.pupiq.net/api/");
+defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
+defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
+defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME","");
+defined("PUPIQ_HTTPS") || define("PUPIQ_HTTPS",false);
 
 class Pupiq {
 	var $_api_key = "";
@@ -114,7 +115,7 @@ class Pupiq {
 		// http://pupiq_srv.localhost/i/1/1/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
 		if(preg_match('/^http:\/\/[^\/]+(?<base_uri>\/i\/([0-9a-f]+\/){4}(?<original_width>\d+)x(?<original_height>\d+)\/)(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)(?<border>(|xc|xt|x[0-9a-f]{6}))_[0-9a-f]{16}\.(?<suffix>jpg|png)$/',$url,$matches)){
 			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
-			$this->_base_href = 'http://'.$hostname.$matches["base_uri"];
+			$this->_base_href = 'http'.(PUPIQ_HTTPS ? "s" : "").'://'.$hostname.$matches["base_uri"];
 			$this->_original_width = (int)$matches["original_width"];
 			$this->_original_height = (int)$matches["original_height"];
 			$this->_width = $matches["width"];
