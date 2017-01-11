@@ -59,6 +59,7 @@ class PupiqAttachment{
 			"doc" => "application/msword",
 			"xls" => "application/vnd.ms-excel",
 			"ppt" => "application/vnd.ms-powerpoint",
+			"xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 
 			"docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 
