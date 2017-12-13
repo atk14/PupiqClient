@@ -51,6 +51,9 @@ Consider an image in the original resolution 800x600. In the string variable $im
     {!$img|pupiq_img:"80x80xcrop,top"} {* 80x80 *}
     {!$img|pupiq_img:"80x80xcrop,bottom"} {* 80x80 *}
 
+    To preserve aspect ratio and fill the background size with a specific colour
+    {!$img|pupiq_img:"80x80x#ffffff"} {* 80x80, the image is not cropped *}
+
     To add some attributes to img tag
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon'"}
 
