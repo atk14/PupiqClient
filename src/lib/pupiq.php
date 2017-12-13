@@ -3,7 +3,7 @@ defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Her
 defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","http://i.pupiq.net/api/");
 defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
-defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME","");
+defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
 defined("PUPIQ_HTTPS") || define("PUPIQ_HTTPS",(!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") || (!empty($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] == 443));
 
 class Pupiq {
