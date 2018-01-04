@@ -38,7 +38,7 @@ class Pupiq {
 			"auth_token" => $pupiq->getAuthToken(),
 		);
 		$options = array(
-			"acceptable_error_codes" => array(400),
+			"acceptable_error_codes" => array(400,403),
 		);
 		$file = null;
 
@@ -86,7 +86,7 @@ class Pupiq {
 		),array(
 			"auth_token" => $pupiq->getAuthToken()
 		),array(
-			"acceptable_error_codes" => array(400)
+			"acceptable_error_codes" => array(400,403)
 		));
 
 		if(!$data){
