@@ -12,8 +12,8 @@
                 }
         ],
         "require": {
-                "php": ">=5.0.0",
-                 "atk14/api-data-fetcher": ">=1.0"
+                "php": ">=5.3.0",
+                "atk14/api-data-fetcher": "1.*"
         },
         "require-dev": {
         },
