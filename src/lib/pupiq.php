@@ -7,6 +7,9 @@ defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.ex
 defined("PUPIQ_HTTPS") || define("PUPIQ_HTTPS",(!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") || (!empty($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] == 443));
 
 class Pupiq {
+
+	const VERSION = "1.3";
+
 	var $_api_key = "";
 	var $_original_width = null;
 	var $_original_height = null;
