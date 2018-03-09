@@ -17,7 +17,7 @@ class PupiqAttachmentField extends FileField{
 		if($err || !$file){ return array($err,$file); }
 
 		$attachment = Pupiq::CreateAttachment($file->getTmpFileName(),$file->getFileName(),$err_msg);
-		$file->cleanUp(); // unlink temporary file
+		//$file->cleanUp(); // unlink temporary file
 
 		if(!$attachment){
 			return array($err_msg,null);
