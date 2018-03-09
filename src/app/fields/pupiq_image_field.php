@@ -3,6 +3,7 @@
  * Cleaned value is a Pupiq instance.
  */
 class PupiqImageField extends ImageField{
+
 	function __construct($options = array()){
 		$options += array(
 			"widget" => new PupiqImageInput(),
@@ -15,11 +16,13 @@ class PupiqImageField extends ImageField{
 			return array(null,new Pupiq($value));
 		}
 
-		list($err,$value) = parent::clean($value);
+		list($err,$file) = parent::clean($value);
+		if($err || !$file){ return array($err,$file); }
 
-		if($err || !$value){ return array($err,$value); }
+		$pupiq = Pupiq::CreateImage($file->getTmpFileName(),$err_msg)
+		$file->cleanUp(); // unlink temporary file
 
-		if(!$pupiq = Pupiq::CreateImage($value->getTmpFileName(),$err_msg)){
+		if(!$pupiq){
 			return array($err_msg,null);
 		}
 

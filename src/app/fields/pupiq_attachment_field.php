@@ -1,5 +1,6 @@
 <?php
 class PupiqAttachmentField extends FileField{
+
 	function __construct($options = array()){
 		$options += array(
 			"widget" => new PupiqAttachmentInput(), 
@@ -12,10 +13,13 @@ class PupiqAttachmentField extends FileField{
 			return array(null,new PupiqAttachment($value));
 		}
 
-		list($err,$value) = parent::clean($value);
-		if($err || !$value){ return array($err,$value); }
+		list($err,$file) = parent::clean($value);
+		if($err || !$file){ return array($err,$file); }
 
-		if(!$attachment = Pupiq::CreateAttachment($value->getTmpFileName(),$value->getFileName(),$err_msg)){
+		$attachment = Pupiq::CreateAttachment($file->getTmpFileName(),$file->getFileName(),$err_msg);
+		$file->cleanUp(); // unlink temporary file
+
+		if(!$attachment){
 			return array($err_msg,null);
 		}
 
