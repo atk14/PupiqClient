@@ -9,7 +9,7 @@ Installation
 Just use the Composer:
 
     cd path/to/your/atk14/project/
-    composer require atk14/pupiq-client dev-master
+    composer require atk14/pupiq-client
 
     ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq.php lib/pupiq.php
     ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq_attachment.php lib/pupiq_attachment.php
@@ -20,11 +20,6 @@ Just use the Composer:
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_attrs.php app/helpers/modifier.img_attrs.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
-
-If you haven't yet the Composer installed, run the following commands
-
-    cd path/to/your/atk14/project/
-    curl -sS https://getcomposer.org/installer | php
 
 Configuration
 ------------
