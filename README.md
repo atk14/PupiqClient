@@ -50,7 +50,7 @@ Consider an image in the original resolution 800x600. In the string variable $im
     {!$img|pupiq_img:"80x80x#ffffff"} {* 80x80, the image is not cropped *}
 
     To add some attributes to img tag
-    {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon'"}
+    {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
 
     To add some attributes prepared as array (got from a controller for example)
 
@@ -59,6 +59,7 @@ Consider an image in the original resolution 800x600. In the string variable $im
         $this->tpl_data["image_attributes_array"] = array(
             "class" => "image-icon",
             "title" => "Nice icon",
+            "data-clickable" => true
         );
     ....
     }

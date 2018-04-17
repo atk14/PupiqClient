@@ -136,7 +136,7 @@ class Pupiq {
 	 */
 	function getImgTag($geometry = null,$options = array()){
 		$options += array(
-			"alt" => "Image",
+			"alt" => "",
 			"attrs" => array()
 		);
 
@@ -154,7 +154,7 @@ class Pupiq {
 
 		$_attrs = array();
 		foreach($attrs as $k => $v){
-			$_attrs[] = $k.'="'.htmlspecialchars($v).'"';
+			$_attrs[] = $v===true ? htmlspecialchars($k) : htmlspecialchars($k).'="'.htmlspecialchars($v).'"';
 		}
 
 		return '<img '.join(" ",$_attrs).' />';
