@@ -17,6 +17,8 @@ class Pupiq {
 	var $_height = null;
 	var $_lang = PUPIQ_LANG;
 	var $_transformation_string = null;
+	var $_watermark = null; // "default", "logo", "text"...
+	var $_watermark_revision = null; // 1, 2, 3...
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -113,10 +115,23 @@ class Pupiq {
 		$this->_transformation_string = null;
 		$this->_suffix = null;
 		$this->_code = null;
+		$this->_watermark = null;
+		$this->_watermark_revision = null;
 
 		// http://pupiq_srv.localhost/i/1/1/9/9/2000x1600/xlfbAz_800x600_94256fa57005d815.jpg
 		// http://pupiq_srv.localhost/i/1/1/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
-		if(preg_match('/^https?:\/\/[^\/]+(?<base_uri>\/i\/([0-9a-f]+\/){4}(?<original_width>\d+)x(?<original_height>\d+)\/)(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)(?<border>(|xc|xt|x[0-9a-f]{6}))_[0-9a-f]{16}\.(?<suffix>jpg|png)$/',$url,$matches)){
+		//
+		// watermarks:
+		// http://pupiq_srv.localhost/i/1/1/w/default/8/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
+		// "w/default/8/" stands for "watermark usage flag / watermark name / watermark revision"
+		$base_uri = 'https?:\/\/[^\/]+(?<base_uri>\/i\/';
+		$user_id = '(?<user_id>[0-9a-f]+\/){2}';
+		$watermark = '(?<watermark>w\/(?<watermark_name>[a-z][a-z0-9._-]{0,49})\/(?<watermark_revision>[1-9][0-9]{0,3})\/|)';
+		$image_id = '(?<image_id>[0-9a-f]+\/){2}';
+		$original_geometry = '(?<original_geometry>(?<original_width>\d+)x(?<original_height>\d+)\/))';
+		$border = '(?<border>(|xc|xt|x[0-9a-f]{6}))';
+		$suffix = '(?<suffix>jpg|png)';
+		if(preg_match('/^'.$base_uri.$user_id.$watermark.$image_id.$original_geometry.'(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)'.$border.'_[0-9a-f]{16}\.'.$suffix.'$/',$url,$matches)){
 			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
 			$this->_base_href = 'http'.(PUPIQ_HTTPS ? "s" : "").'://'.$hostname.$matches["base_uri"];
 			$this->_original_width = (int)$matches["original_width"];
@@ -126,6 +141,10 @@ class Pupiq {
 			$this->_transformation_string = "$matches[width]x$matches[height]$matches[border]";
 			$this->_suffix = $matches["suffix"];
 			$this->_code = $matches["code"];
+			if($matches["watermark"]){
+				$this->_watermark = $matches["watermark_name"];
+				$this->_watermark_revision = $matches["watermark_revision"];
+			}
 			return true;
 		}
 		return false;
