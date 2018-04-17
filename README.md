@@ -74,6 +74,16 @@ Consider an image in the original resolution 800x600. In the string variable $im
     <img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
     <img {!$img|img_attrs:"80x80"} alt="a nice butterfly">
 
+### Watermarks
+
+At first you need to create one or more watermark definitions at address https://i.pupiq.net/api/cs/watermark_definitions/create_new/
+
+The default watermark should be named "default". When you didn't mention the name of the watermark, "default" is used.
+
+    {!$img|pupiq_img:"600x600xcrop,watermark"} {* default *}
+    {!$img|pupiq_img:"600x600xcrop,watermark=default"} {* also default *}
+    {!$img|pupiq_img:"600x600xcrop,watermark=logo"} {* watermark definition named logo is used *}
+
 License
 -------
 

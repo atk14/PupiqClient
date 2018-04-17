@@ -17,6 +17,8 @@ class Pupiq {
 	var $_height = null;
 	var $_lang = PUPIQ_LANG;
 	var $_transformation_string = null;
+	var $_user_id = null;
+	var $_image_id = null;
 	var $_watermark = null; // "default", "logo", "text"...
 	var $_watermark_revision = null; // 1, 2, 3...
 
@@ -107,7 +109,6 @@ class Pupiq {
 	function setUrl($url){
 		$this->_url = $url;
 
-		$this->_base_href = null;
 		$this->_original_width = null;
 		$this->_original_height = null;
 		$this->_width = null;
@@ -115,6 +116,8 @@ class Pupiq {
 		$this->_transformation_string = null;
 		$this->_suffix = null;
 		$this->_code = null;
+		$this->_user_id = null;
+		$this->_image_id = null;
 		$this->_watermark = null;
 		$this->_watermark_revision = null;
 
@@ -124,16 +127,14 @@ class Pupiq {
 		// watermarks:
 		// http://pupiq_srv.localhost/i/1/1/w/default/8/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
 		// "w/default/8/" stands for "watermark usage flag / watermark name / watermark revision"
-		$base_uri = 'https?:\/\/[^\/]+(?<base_uri>\/i\/';
-		$user_id = '(?<user_id>[0-9a-f]+\/){2}';
+		$base_uri = 'https?:\/\/(?<hostname>[^\/]+)\/i\/';
+		$user_id = '(?<user_id>([0-9a-f]+\/){2})';
 		$watermark = '(?<watermark>w\/(?<watermark_name>[a-z][a-z0-9._-]{0,49})\/(?<watermark_revision>[1-9][0-9]{0,3})\/|)';
-		$image_id = '(?<image_id>[0-9a-f]+\/){2}';
-		$original_geometry = '(?<original_geometry>(?<original_width>\d+)x(?<original_height>\d+)\/))';
+		$image_id = '(?<image_id>([0-9a-f]+\/){2})';
+		$original_geometry = '(?<original_geometry>(?<original_width>\d+)x(?<original_height>\d+)\/)';
 		$border = '(?<border>(|xc|xt|x[0-9a-f]{6}))';
 		$suffix = '(?<suffix>jpg|png)';
 		if(preg_match('/^'.$base_uri.$user_id.$watermark.$image_id.$original_geometry.'(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)'.$border.'_[0-9a-f]{16}\.'.$suffix.'$/',$url,$matches)){
-			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
-			$this->_base_href = 'http'.(PUPIQ_HTTPS ? "s" : "").'://'.$hostname.$matches["base_uri"];
 			$this->_original_width = (int)$matches["original_width"];
 			$this->_original_height = (int)$matches["original_height"];
 			$this->_width = $matches["width"];
@@ -141,6 +142,8 @@ class Pupiq {
 			$this->_transformation_string = "$matches[width]x$matches[height]$matches[border]";
 			$this->_suffix = $matches["suffix"];
 			$this->_code = $matches["code"];
+			$this->_user_id = $matches["user_id"]; // "1/1/"
+			$this->_image_id = $matches["image_id"]; // "3f/2f/"
 			if($matches["watermark"]){
 				$this->_watermark = $matches["watermark_name"];
 				$this->_watermark_revision = $matches["watermark_revision"];
@@ -186,7 +189,7 @@ class Pupiq {
 			return $this->_url;
 		}
 
-		$base_href = $this->_base_href;
+		$base_href = $this->_getBaseHref();
 		$code = $this->_code;
 		$suffix = null;
 
@@ -194,6 +197,13 @@ class Pupiq {
 		$token = $this->_calcToken($transformation_string);
 
 		return "$base_href{$code}_".urlencode($transformation_string)."_$token.$suffix";
+	}
+
+	protected function _getBaseHref(){
+		$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
+		$watermark = $this->_watermark ? "w/$this->_watermark/$this->_watermark_revision/" : "";
+		$original_geometry = "{$this->_original_width}x$this->_original_height/";
+		return 'http'.(PUPIQ_HTTPS ? "s" : "")."://$hostname/i/$this->_user_id$watermark$this->_image_id$original_geometry";
 	}
 
 	/**
@@ -213,7 +223,12 @@ class Pupiq {
 	 * $pupiq->setTransformation("!80x80"); // crop
 	 * $pupiq->setTransformation("80x80x#ffffff"); // max width x max height, final geometry will be 80x80 and the background will be filled with the specified color
 	 *
-	 * $pupiq->setTransformation("1600x1600,enable_enlargement"); // max. vyska se zapnutym zvetsovanim
+	 * $pupiq->setTransformation("1600x1600,enable_enlargement"); // enabling enlargement (disabled by default)
+	 *
+	 * // watermarks
+	 * $pupiq->setTransformation("1600x1600,watermark"); // default watermark will be applied
+	 * $pupiq->setTransformation("1600x1600,watermark=default"); // the same, default watermark will be applied
+	 * $pupiq->setTransformation("1600x1600,watermark=logo"); // special watermark named "logo" wull be applied
 	 */
 	function setTransformation($transformation_string){
 		$transformation_string = trim($transformation_string);
@@ -222,9 +237,13 @@ class Pupiq {
 		$options = array();
 		if(preg_match('/^(.+?),(.+)/',$transformation_string,$matches)){
 			$transformation_string = $matches[1];
-			$options = explode(',',$matches[2]); // array("enable_enlargement")
+			$options = PupiqUtils::DecodeParams($matches[2]);
 		}
 
+		$options += array(
+			"enable_enlargement" => false,
+			"watermark" => null,
+		);
 
 		$this->_width = null;
 		$this->_height = null;
@@ -264,15 +283,15 @@ class Pupiq {
 
 			// zde je kontrola max. rozmeru
 			// nesmi dojit k automatickemu zvetsovani, pokud to neni explicitne uvedeno (v $options "enable_enlargement")
-			if($this->getOriginalWidth() && $this->getOriginalHeight() && !in_array('enable_enlargement',$options)){
+			if($this->getOriginalWidth() && $this->getOriginalHeight() && !$options["enable_enlargement"]){
 				if($this->getWidth()>$this->getOriginalWidth()){
 					$ratio = (float)$this->getOriginalWidth() / (float)$this->getWidth(); // mensi nez 1
 					$new_width = $this->getOriginalWidth();
 					$new_height = round($this->getHeight() * $ratio);
 					$this->setWidth($new_width,false);
 					$this->setHeight($new_height,false);
-
 				}
+
 				if($this->getHeight()>$this->getOriginalHeight()){
 					// toto se stane pouze v pripade, ze $height == $original_height + 1;
 					$this->setHeight($this->getOriginalHeight(),false);
@@ -306,6 +325,14 @@ class Pupiq {
 		}
 
 		$this->_transformation_string = $transformation_string;
+
+		// watermark
+		$this->_watermark = null;
+		$this->_watermark_revision = null;
+		if($options["watermark"]){
+			$this->_watermark = $options["watermark"]===true ? "default" : (string)$options["watermark"];
+			$this->_watermark_revision = 1; // TODO:
+		}
 
 		return $this->getTransformation();
 	}
@@ -367,7 +394,7 @@ class Pupiq {
 	function getApiKey(){ return $this->_api_key; }
 
 	function _calcToken($tranformation_string){
-		return substr(md5($tranformation_string.$this->getCode().$this->getApiKey()),0,16);
+		return substr(md5($tranformation_string.$this->_watermark.$this->_watermark_revision.$this->getCode().$this->getApiKey()),0,16);
 	}
 
 	function getUserId(){
@@ -376,12 +403,14 @@ class Pupiq {
 	}
 
 	/**
-	 * Id, pod kterym je obrazek ulozen v Pupiqove db
+	 * Returns ID of the image stored in the Pupiq database
+	 *
+	 * @return int
 	 */
 	function getImageId(){
-		// http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_52fa2ef3361053ff.jpg -> 75c1 -> 30145
-		if(preg_match('/^https?:\/\/[^\/]+\/i\/[0-9a-f]+\/[0-9a-f]+\/[0-9a-f]+\/([0-9a-f]+)\//',$this->getUrl(),$matches)){
-			return (int)hexdec($matches[1]);
+		$ary = explode('/',$this->_image_id); // "75c/75c1/" -> ["75c","75c1",""]
+		if(isset($ary[1])){
+			return (int)hexdec($ary[1]);
 		}
 	}
 
