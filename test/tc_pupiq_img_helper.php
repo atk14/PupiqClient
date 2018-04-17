@@ -40,10 +40,10 @@ class TcPupiqImgHelper extends TcBase {
 
 		// watermarks
 		$out = smarty_modifier_pupiq_img($image, "800x600,watermark");
-		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/w/default/1/75c/75c1/1300x872/gQs7Nv_800x536_b16d624ce5698df7.jpg" alt="" width="800" height="536" />',$out);
+		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/w/default/1/75c/75c1/1300x872/gQs7Nv_800x536_930d98978ec0c024.jpg" alt="" width="800" height="536" />',$out);
 
 		$out = smarty_modifier_pupiq_img($image, "800x600,watermark=logo");
-		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/w/logo/1/75c/75c1/1300x872/gQs7Nv_800x536_03549f37bb6faf7f.jpg" alt="" width="800" height="536" />',$out);
+		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/w/logo/1/75c/75c1/1300x872/gQs7Nv_800x536_6af91444713474bd.jpg" alt="" width="800" height="536" />',$out);
 
 		$out = smarty_modifier_pupiq_img($image, "800x600,watermark=0");
 		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_b1ae08e7e3612505.jpg" alt="" width="800" height="536" />',$out);

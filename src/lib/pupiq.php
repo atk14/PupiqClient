@@ -394,8 +394,7 @@ class Pupiq {
 	function getApiKey(){ return $this->_api_key; }
 
 	function _calcToken($tranformation_string){
-		// $this->_watermark_revision is not involved into the token calculation
-		return substr(md5($tranformation_string.$this->_watermark.$this->getCode().$this->getApiKey()),0,16);
+		return substr(md5($tranformation_string.$this->_watermark.$this->_watermark_revision.$this->getCode().$this->getApiKey()),0,16);
 	}
 
 	function getUserId(){
