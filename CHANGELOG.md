@@ -1,3 +1,9 @@
+## [1.4] - 2018-04-18
+
+- Added support for watermarks
+- Added constant Pupiq::VERSION
+- Default alt of an <img> tag is empty string (it was "Image")
+
 ## [1.3] - 2017-09-08
 
 - Added support for xlsx attachments
