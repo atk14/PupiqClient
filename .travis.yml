@@ -1,0 +1,18 @@
+# vim:ts=2:sw=2:et
+dist: precise
+
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+
+before_install:
+  - composer update --dev
+
+script:
+  - cd test && wget https://raw.github.com/atk14/Atk14/master/src/scripts/run_unit_tests && chmod +x run_unit_tests && ./run_unit_tests
