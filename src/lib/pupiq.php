@@ -5,6 +5,7 @@ defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
 defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
 defined("PUPIQ_HTTPS") || define("PUPIQ_HTTPS",(!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") || (!empty($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] == 443));
+defined("PUPIQ_DEFAULT_WATERMARK_DEFINITION") || define("PUPIQ_DEFAULT_WATERMARK_DEFINITION","default");
 
 class Pupiq {
 
@@ -19,7 +20,7 @@ class Pupiq {
 	var $_transformation_string = null;
 	var $_user_id = null;
 	var $_image_id = null;
-	var $_watermark = null; // "default", "logo", "text"...
+	var $_watermark = null; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
 	var $_watermark_revision = null; // 1, 2, 3...
 
 	function __construct($url_or_api_key = "",$api_key = null){
@@ -330,7 +331,7 @@ class Pupiq {
 		$this->_watermark = null;
 		$this->_watermark_revision = null;
 		if($options["watermark"]){
-			$this->_watermark = $options["watermark"]===true ? "default" : (string)$options["watermark"];
+			$this->_watermark = $options["watermark"]===true ? PUPIQ_DEFAULT_WATERMARK_DEFINITION : (string)$options["watermark"];
 			$this->_watermark_revision = 1; // TODO:
 		}
 
