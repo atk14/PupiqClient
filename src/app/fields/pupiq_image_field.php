@@ -19,7 +19,7 @@ class PupiqImageField extends ImageField{
 		list($err,$file) = parent::clean($value);
 		if($err || !$file){ return array($err,$file); }
 
-		$pupiq = Pupiq::CreateImage($file->getTmpFileName(),$err_msg)
+		$pupiq = Pupiq::CreateImage($file->getTmpFileName(),$err_msg);
 		//$file->cleanUp(); // unlink temporary file
 
 		if(!$pupiq){
