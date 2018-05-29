@@ -1,3 +1,7 @@
+## [1.4.1] - 2018-05-29
+
+- Protected class variables, testing, minor fix
+
 ## [1.4] - 2018-04-18
 
 - Added support for watermarks
