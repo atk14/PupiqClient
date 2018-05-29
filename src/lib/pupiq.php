@@ -11,17 +11,23 @@ class Pupiq {
 
 	const VERSION = "1.4";
 
-	var $_api_key = "";
-	var $_original_width = null;
-	var $_original_height = null;
-	var $_width = null;
-	var $_height = null;
-	var $_lang = PUPIQ_LANG;
-	var $_transformation_string = null;
-	var $_user_id = null;
-	var $_image_id = null;
-	var $_watermark = null; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
-	var $_watermark_revision = null; // 1, 2, 3...
+	protected $_api_key = "";
+
+	protected $_url = "";
+
+	protected $_original_width;
+	protected $_original_height;
+	protected $_width;
+	protected $_height;
+	protected $_transformation_string;
+	protected $_suffix;
+	protected $_code;
+	protected $_user_id;
+	protected $_image_id;
+	protected $_watermark; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
+	protected $_watermark_revision; // 1, 2, 3...
+
+	protected $_lang = PUPIQ_LANG;
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -108,19 +114,9 @@ class Pupiq {
 	function getLang(){ return "cs"; }
 
 	function setUrl($url){
-		$this->_url = $url;
 
-		$this->_original_width = null;
-		$this->_original_height = null;
-		$this->_width = null;
-		$this->_height = null;
-		$this->_transformation_string = null;
-		$this->_suffix = null;
-		$this->_code = null;
-		$this->_user_id = null;
-		$this->_image_id = null;
-		$this->_watermark = null;
-		$this->_watermark_revision = null;
+		$this->_resetObjectState();
+		$this->_url = $url;
 
 		// http://pupiq_srv.localhost/i/1/1/9/9/2000x1600/xlfbAz_800x600_94256fa57005d815.jpg
 		// http://pupiq_srv.localhost/i/1/1/3f/3f/3008x2000/0HuQGW_800x800xc_0779b21d95f9ac08.jpg
@@ -448,6 +444,21 @@ class Pupiq {
 	}
 
 	function getId(){ return $this->toString(); } // pro TableRecord & DbMole, TODO: to be removed
-	function toString(){ return $this->getUrl(); }
+	function toString(){ return (string)$this->getUrl(); }
 	function __toString(){ return $this->toString(); }
+
+	protected function _resetObjectState(){
+		$this->_url = null;
+		$this->_original_width = null;
+		$this->_original_height = null;
+		$this->_width = null;
+		$this->_height = null;
+		$this->_transformation_string = null;
+		$this->_suffix = null;
+		$this->_code = null;
+		$this->_user_id = null;
+		$this->_image_id = null;
+		$this->_watermark = null;
+		$this->_watermark_revision = null;
+	}
 }
