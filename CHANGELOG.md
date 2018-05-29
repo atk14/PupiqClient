@@ -1,4 +1,4 @@
-## [1.4.1] - 2018-05-29
+## [1.4.2] - 2018-05-29
 
 - Protected class variables, testing, minor fix
 
