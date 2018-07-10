@@ -6,7 +6,10 @@ class PupiqImageField extends ImageField{
 
 	function __construct($options = array()){
 		$options += array(
-			"widget" => new PupiqImageInput(),
+			"required" => true,
+		);
+		$options += array(
+			"widget" => new PupiqImageInput(array("removal_enabled" => !$options["required"])),
 		);
 		parent::__construct($options);
 	}

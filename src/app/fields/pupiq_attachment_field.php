@@ -3,7 +3,10 @@ class PupiqAttachmentField extends FileField{
 
 	function __construct($options = array()){
 		$options += array(
-			"widget" => new PupiqAttachmentInput(), 
+			"required" => true,
+		);
+		$options += array(
+			"widget" => new PupiqAttachmentInput(array("removal_enabled" => !$options["required"])),
 		);
 		parent::__construct($options);
 	}

@@ -1,5 +1,18 @@
 <?php
-class PupiqAttachmentInput extends FileInput{
+class PupiqAttachmentInput extends FileInput {
+
+	var $removal_enabled;
+
+	function __construct($options = array()){
+		$options += array(
+			"removal_enabled" => true,
+		);
+
+		$this->removal_enabled = $options["removal_enabled"];
+		unset($options["removal_enabled"]);
+
+		parent::__construct($options);
+	}
 
 	/**
 	 *
@@ -15,7 +28,8 @@ class PupiqAttachmentInput extends FileInput{
 
 		$p = new PupiqAttachment($url);
 		$image_url = $p->getUrl();
-		$out = '<br><a href="'.$image_url.'" class="xpull-left" title="'._('Download attachment').'">'.h($p->getFileName()).'</a> (<input type="checkbox" name="'.$checkbox_remove.'"> '._('remove').')<br>'.$out;
+		$removal_chekbox = $this->removal_enabled ? ' (<input type="checkbox" name="'.$checkbox_remove.'"> '._('remove').')' : '';
+		$out = '<br><a href="'.$image_url.'" class="xpull-left" title="'._('Download attachment').'">'.h($p->getFileName()).'</a>'.$removal_chekbox.'<br>'.$out;
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqAttachmentInput::_PackValue($url).'">';
 
 		return $out;
@@ -32,7 +46,7 @@ class PupiqAttachmentInput extends FileInput{
 			$out = PupiqAttachmentInput::_UnpackValue($HTTP_REQUEST->getPostVar("_{$name}_initial_"));
 		}
 
-		if($HTTP_REQUEST->getPostVar("_{$name}_remove_")){
+		if($this->removal_enabled && $HTTP_REQUEST->getPostVar("_{$name}_remove_")){
 			$out = null;
 		}
 
