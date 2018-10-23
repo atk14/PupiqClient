@@ -21,6 +21,7 @@ class Pupiq {
 	protected $_height;
 	protected $_transformation_string;
 	protected $_suffix;
+	protected $_format;
 	protected $_code;
 	protected $_user_id;
 	protected $_image_id;
@@ -240,6 +241,7 @@ class Pupiq {
 		$options += array(
 			"enable_enlargement" => false,
 			"watermark" => null,
+			"format" => null, // "png", "jpg"
 		);
 
 		$this->_width = null;
@@ -331,6 +333,15 @@ class Pupiq {
 			$this->_watermark_revision = 1; // TODO:
 		}
 
+		// format
+		$this->_format = null;
+		if($options["format"]){
+			if(!in_array($options["format"],array("jpg","png"))){
+				throw new Exception("Pupiq: Invalid format $options[format], expecting jpg or png");
+			}
+			$this->_format = $options["format"];
+		}
+
 		return $this->getTransformation();
 	}
 
@@ -339,11 +350,15 @@ class Pupiq {
 	 * echo $pupiq->getTransformation($force_suffix); // "800x600,transparent", $force_suffix=="png"
 	 */
 	function getTransformation(&$force_suffix = null){
-		$force_suffix = $this->_suffix; // TODO: kdyz tak o tom premyslim, prijde mi, ze bez transperentnosti by mohl byt obrazky vzdy jpeg
+		$force_suffix = $this->_suffix;
+		if($this->_format){
+			$force_suffix = $this->_format;
+		}
 		if(!$this->_transformation_string){
 			return $this->getWidth()."x".$this->getHeight();
 		}
 		if(preg_match('/xt$/',$this->_transformation_string)){
+			// Transparent -> suffix needs to be png
 			$force_suffix = "png";
 		}
 		return $this->_transformation_string;

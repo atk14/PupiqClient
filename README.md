@@ -52,6 +52,10 @@ Consider an image in the original resolution 800x600. In the string variable $im
     To add some attributes to img tag
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
 
+    To set a specific format
+    {!$img|pupiq_img:"80x80,format=png"}
+    {!$img|pupiq_img:"80x80,format=jpg"}
+
     To add some attributes prepared as array (got from a controller for example)
 
     class SomeController extends ApplicationController {
