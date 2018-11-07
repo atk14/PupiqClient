@@ -1,3 +1,8 @@
+## [1.5] - 2018-11-07
+
+- Specific image format can be set in transformation string
+- In PupiqImageField the removal checkbox is applicable only when the image or attachment is not required
+
 ## [1.4.2] - 2018-05-29
 
 - Protected class variables, testing, minor fix
