@@ -5,6 +5,9 @@ class TcPupiqUtils extends TcBase {
 		$params = PupiqUtils::DecodeParams('alt=Image,title="Very nice image",data-clickable');
 		$this->assertEquals(array("alt" => "Image", "title" => "Very nice image", "data-clickable" => true),$params);
 
+		$params = PupiqUtils::DecodeParams("alt='',title=");
+		$this->assertEquals(array("alt" => "", "title" => ""),$params);
+
 		$params = PupiqUtils::DecodeParams(array("alt" => "Image", "title" => "Another very nice image", "data-clickable" => true));
 		$this->assertEquals(array("alt" => "Image", "title" => "Another very nice image", "data-clickable" => true),$params);
 

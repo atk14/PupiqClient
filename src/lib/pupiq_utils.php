@@ -28,7 +28,7 @@ class PupiqUtils {
 				$k = trim($k);
 				$v = trim($v);
 				# remove quotes from value
-				if (preg_match("/^[\"'](.+)[\"']$/", $v, $m)) {
+				if (preg_match("/^[\"'](.*)[\"']$/", $v, $m)) {
 					$v = trim($m[1]);
 				}
 				$out[$k]=$v;
