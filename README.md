@@ -19,6 +19,8 @@ Just use the Composer:
     ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_attrs.php app/helpers/modifier.img_attrs.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_height.php app/helpers/modifier.img_height.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_width.php app/helpers/modifier.img_width.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
 
 Configuration
@@ -77,6 +79,10 @@ Consider an image in the original resolution 800x600. In the string variable $im
     To render a <img> tag by hand
     <img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
     <img {!$img|img_attrs:"80x80"} alt="a nice butterfly">
+
+    To determine image width and height
+    Width is {$img|img_width:"80x80"} pixels
+    Height is {$img|img_height:"80x80"} pixels
 
 ### Watermarks
 
