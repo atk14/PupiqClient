@@ -35,30 +35,30 @@ Usage in templates
 
 Consider an image in the original resolution 800x600. In the string variable $img there is URL to the image.
 
-    To preserve aspect ratio
+    To preserve aspect ratio:
     {!$img|pupiq_img:"80"} {* 80x60 *}
     {!$img|pupiq_img:"x30"} {*  40x30 *}
     {!$img|pupiq_img:"80x80"} {*  80x60 *}
 
-    To crop the image
+    To crop the image:
     {!$img|pupiq_img:"!80x80"} {* 80x80 *}
     {!$img|pupiq_img:"80x80xcrop"} {* 80x80 *}
 
-    Top crop image to the top or bottom line
+    Top crop image to the top or bottom line:
     {!$img|pupiq_img:"80x80xcrop,top"} {* 80x80 *}
     {!$img|pupiq_img:"80x80xcrop,bottom"} {* 80x80 *}
 
-    To preserve aspect ratio and fill the background size with a specific colour
+    To preserve aspect ratio and fill the background size with a specific colour:
     {!$img|pupiq_img:"80x80x#ffffff"} {* 80x80, the image is not cropped *}
 
-    To add some attributes to img tag
+    To add some attributes to img tag:
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
 
-    To set a specific format
+    To set a specific format:
     {!$img|pupiq_img:"80x80,format=png"}
     {!$img|pupiq_img:"80x80,format=jpg"}
 
-    To add some attributes prepared as array (got from a controller for example)
+    To add some attributes prepared as array (got from a controller for example):
 
     class SomeController extends ApplicationController {
     ....
@@ -72,15 +72,15 @@ Consider an image in the original resolution 800x600. In the string variable $im
 
     {!$img|pupiq_img:"80x80,enable_enlargement":$image_attributes_array}
 
-    To magnify
+    To magnify:
     {!$img|pupiq_img:"1600x1600"} {* 800x600, i.e. there is no magnification by default *}
     {!$img|pupiq_img:"1600x1600,enable_enlargement"} {* 1600x1200 *}
 
-    To render a <img> tag by hand
+    To render a <img> tag by hand:
     <img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
     <img {!$img|img_attrs:"80x80"} alt="a nice butterfly">
 
-    To determine image width and height
+    To determine image width and height:
     Width is {$img|img_width:"80x80"} pixels
     Height is {$img|img_height:"80x80"} pixels
 
