@@ -37,8 +37,8 @@ Consider an image in the original resolution 800x600. In the string variable $im
 
     To preserve aspect ratio:
     {!$img|pupiq_img:"80"} {* 80x60 *}
-    {!$img|pupiq_img:"x30"} {*  40x30 *}
-    {!$img|pupiq_img:"80x80"} {*  80x60 *}
+    {!$img|pupiq_img:"x30"} {* 40x30 *}
+    {!$img|pupiq_img:"80x80"} {* 80x60 *}
 
     To crop the image:
     {!$img|pupiq_img:"!80x80"} {* 80x80 *}
