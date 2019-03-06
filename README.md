@@ -94,6 +94,49 @@ The default watermark should be named "default". When you didn't mention the nam
     {!$img|pupiq_img:"600x600xcrop,watermark=default"} {* also default *}
     {!$img|pupiq_img:"600x600xcrop,watermark=logo"} {* watermark definition named logo is used *}
 
+Set up local proxy
+------------------
+
+With local proxy, images uploaded to the Pupiq are being cached and served from your server.
+
+Here you can find guides how to set up a local proxy in your application.
+
+    cd path/to/your/atk14/project/
+    mkdir i a
+    chmod 777 i a
+    ln -s ../vendor/atk14/pupiq-client/src/i/error.php i/error.php
+    ln -s ../vendor/atk14/pupiq-client/src/i/.htaccess i/.htaccess
+    ln -s ../vendor/atk14/pupiq-client/src/a/error.php a/error.php
+    ln -s ../vendor/atk14/pupiq-client/src/a/.htaccess a/.htaccess
+
+Add following lines to .gitignore:
+
+    i/*
+    !i/.htaccess
+    !i/error.php
+    a/*
+    !a/.htaccess
+    !a/error.php
+
+Prevent dispatcher.php to handle requests starting with /i/ or /a/ by adding these lines before ```RewriteRule (.*) dispatcher.php [L]```
+
+    RewriteCond %{REQUEST_URI} !^\/i\/
+    RewriteCond %{REQUEST_URI} !^\/a\/
+
+So the given part of the .htaccess may look like:
+
+    RewriteCond %{REQUEST_URI} ^\/
+    RewriteCond %{REQUEST_URI} !^\/public\/
+    RewriteCond %{REQUEST_URI} !^\/server-status\/
+    RewriteCond %{REQUEST_URI} !^\/server-info\/
+    RewriteCond %{REQUEST_URI} !^\/i\/
+    RewriteCond %{REQUEST_URI} !^\/a\/
+    RewriteRule (.*) dispatcher.php [L]
+
+Define constant PUPIQ_PROXY_HOSTNAME in config/settings.php:
+
+    define("PUPIQ_PROXY_HOSTNAME","your.hostname.com");
+
 License
 -------
 
