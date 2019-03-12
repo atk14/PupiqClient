@@ -1,3 +1,8 @@
+## [1.6] - 2018-03-12
+
+- New helpers (Smarty modifiers) added: img_width and img_height
+- Added files for easier Local Proxy set up
+
 ## [1.5] - 2018-11-07
 
 - Specific image format can be set in transformation string
