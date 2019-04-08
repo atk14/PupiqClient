@@ -30,6 +30,9 @@ class Pupiq {
 
 	protected $_lang = PUPIQ_LANG;
 
+	static protected $_SupportedImageFormats = array("jpg","png");
+	static protected $_ImageFormatsSupportingTransparency = array("png");
+
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
 		if(preg_match('/^http/',$url_or_api_key)){
@@ -131,7 +134,7 @@ class Pupiq {
 		$image_id = '(?<image_id>([0-9a-f]+\/){2})';
 		$original_geometry = '(?<original_geometry>(?<original_width>\d+)x(?<original_height>\d+)\/)';
 		$border = '(?<border>(|xc|xt|x[0-9a-f]{6}))';
-		$suffix = '(?<suffix>jpg|png)';
+		$suffix = '(?<suffix>'.join('|',self::$_SupportedImageFormats).')';
 		if(preg_match('/^'.$base_uri.$user_id.$watermark.$image_id.$original_geometry.'(?<code>[a-zA-Z0-9]+)_(?<width>\d+)x(?<height>\d+)'.$border.'_[0-9a-f]{16}\.'.$suffix.'$/',$url,$matches)){
 			$this->_original_width = (int)$matches["original_width"];
 			$this->_original_height = (int)$matches["original_height"];
@@ -257,6 +260,15 @@ class Pupiq {
 			$transformation_string = $this->getOriginalWidth()."x".$this->getOriginalHeight();
 		}
 
+		// format
+		$this->_format = null;
+		if($options["format"]){
+			if(!in_array($options["format"],self::$_SupportedImageFormats)){
+				throw new Exception("Pupiq: Invalid format $options[format], expecting ".join(" or ",self::$_SupportedImageFormats));
+			}
+			$this->_format = $options["format"];
+		}
+
 		// 3. zapisy, ktere zachovavaji pomer stran
 		if(
 			preg_match('/^(\d+)x?$/',$transformation_string,$matches) || // "80", "80x"
@@ -299,11 +311,17 @@ class Pupiq {
 
 			$transformation_string = $this->getWidth()."x".$this->getHeight();
 
-		// "80x80xtransparent", "80x80xffffff", "80x80xcrop"
-		}elseif(preg_match('/^(\d+)x(\d+)x(c|crop|t|transparent|#?[0-9a-fA-F]{6})$/',$transformation_string,$matches)){
+		// "80x80xtransparent", "80x80xffffff", "80x80xcrop", "80x80xtransparent_or_ffffff"
+		}elseif(preg_match('/^(\d+)x(\d+)x(c|crop|t|transparent|#?[0-9a-fA-F]{6}|transparent_or_#?[0-9a-fA-F]{6})$/',$transformation_string,$matches)){
 			$this->setWidth($matches[1]);
 			$this->setHeight($matches[2]);
-			$border = $matches[3]; // transparent, #ffffff...
+			$border = $matches[3]; // transparent, #ffffff, transparent_or_#ffffff
+			
+			if(preg_match('/^transparent_or_(.*)/',$border,$matches)){
+				$_format = $this->_format ? $this->_format : preg_replace('/^.*\./','',$this->getUrl());
+				$border = in_array($_format,self::$_ImageFormatsSupportingTransparency) ? "transparent" : $matches[1]; // "transparent" or "#ffffff"
+			}
+
 			if($border=="crop"){
 				$border = "c";
 				if(in_array("top",$options)){
@@ -331,15 +349,6 @@ class Pupiq {
 		if($options["watermark"]){
 			$this->_watermark = $options["watermark"]===true ? PUPIQ_DEFAULT_WATERMARK_DEFINITION : (string)$options["watermark"];
 			$this->_watermark_revision = 1; // TODO:
-		}
-
-		// format
-		$this->_format = null;
-		if($options["format"]){
-			if(!in_array($options["format"],array("jpg","png"))){
-				throw new Exception("Pupiq: Invalid format $options[format], expecting jpg or png");
-			}
-			$this->_format = $options["format"];
 		}
 
 		return $this->getTransformation();

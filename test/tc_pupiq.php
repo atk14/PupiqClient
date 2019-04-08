@@ -33,4 +33,26 @@ class TcPupiq extends TcBase{
 		$this->assertEquals(null,$image->getImageId());
 		$this->assertEquals("nice-image.jpg","$image");
 	}
+
+	function test_formatting_image(){
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.jpg");
+
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_b1ae08e7e3612505.jpg",$image->getUrl("800x800"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_b1ae08e7e3612505.png",$image->getUrl("800x800,format=png"));
+
+		// cropping
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xc_442ea0bf0c2cd3c9.jpg",$image->getUrl("800x800xcrop"));
+
+		// colored background
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800x112233_d6b32b5f565ccbd5.jpg",$image->getUrl("800x800x#112233"));
+
+
+		// transparent or colored background
+		// jpg -> colored border
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.jpg");
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800x002233_23ea47c40ef1c59a.jpg",$image->getUrl("800x800xtransparent_or_#002233"));
+		// png -> transparent border
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.png");
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xt_e4493381151ea408.png",$image->getUrl("800x800xtransparent_or_#002233"));
+	}
 }

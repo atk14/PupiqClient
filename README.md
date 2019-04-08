@@ -51,6 +51,14 @@ Consider an image in the original resolution 800x600. In the string variable $im
     To preserve aspect ratio and fill the background size with a specific colour:
     {!$img|pupiq_img:"80x80x#ffffff"} {* 80x80, the image is not cropped *}
 
+    To preserve aspect ratio and use transparent background:
+    {!$img|pupiq_img:"80x80xtransparent"} {* 80x80, the image is not cropped *}
+
+    Keep in mind that transparent background works only on PNG images.
+
+    Transparent background can be specified with a fallback background colour for JPG images:
+    {!$img|pupiq_img:"80x80xtransparent_or_#ffffff"} {* 80x80, the image is not cropped *}
+
     To add some attributes to img tag:
     {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
 
