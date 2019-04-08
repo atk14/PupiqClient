@@ -1,3 +1,7 @@
+## [1.7] - 2019-04-08
+
+- Image border can be specified as transparent with a fallback color for jpg images (e.g. ```800x800xtransparent_or_#ffffff```)
+
 ## [1.6] - 2018-03-12
 
 - New helpers (Smarty modifiers) added: img_width and img_height
