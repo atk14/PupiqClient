@@ -49,6 +49,15 @@ class Pupiq {
 		}
 	}
 
+	/**
+	 * Just another way to instantiate a Pupiq object
+	 *
+	 *	$pupiq = Pupiq::ToObject("http://i.pupiq.net/i/65/65/a53/1a53/756x1233/WSIRgf_756x1233_597a23f2092de822.jpg");
+	 */
+	static function ToObject($image_url){
+		return new Pupiq("$image_url");
+	}
+
 	static function CreateImage($url_or_filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
 
@@ -409,6 +418,49 @@ class Pupiq {
 
 	function getOriginalWidth(){ return $this->_original_width; }
 	function getOriginalHeight(){ return $this->_original_height; }
+
+	/**
+	 * Returns significant colors used in the image
+	 *
+	 * This method is considered as non-critical and informative.
+	 * The process doesn't end when an error occurs during getColors() execution.
+	 *
+	 * Correct result is being cached for a long time.
+	 *
+	 *	$colors = $pupiq->getColors();
+	 *	echo $colors["vibrant"]; // e.g. "#F9DB30"
+	 *
+	 * @return array
+	 */
+	function getColors(){
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+
+		try {
+			$colors = $adf->get("image_colors/detail",array(
+				"url" => $this->getUrl(),
+				"auth_token" => $this->getAuthToken(),
+			),array(
+				"acceptable_error_codes" => array("404","403"),
+				"cache" => 60 * 60 * 24 * 30, // 30 days
+			));
+		}catch(Exception $e){
+			trigger_error("Catched Pupiq exception: ".$e->getMessage());
+			$colors = array();
+		}
+
+		if(!$colors || !array_key_exists("vibrant",$colors)){
+			$colors = array(
+				"vibrant" => null,
+				"light_vibrant" => null,
+				"dark_vibrant" => null,
+				"muted" => null,
+				"light_muted" => null,
+				"dark_muted" => null,
+			);
+		}
+
+		return $colors;
+	}
 
 	function getCode(){ return $this->_code; }
 
