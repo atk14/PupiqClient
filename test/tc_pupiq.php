@@ -42,6 +42,9 @@ class TcPupiq extends TcBase{
 
 		// cropping
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xc_442ea0bf0c2cd3c9.jpg",$image->getUrl("800x800xcrop"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xc_ac756ea1866ff62f.jpg",$image->getUrl("800x400xcrop"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xct_6fcbe211b5f8fad3.jpg",$image->getUrl("800x400xcrop,top"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xcb_cb6aa1d62e976200.jpg",$image->getUrl("800x400xcrop,bottom"));
 
 		// colored background
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800x112233_d6b32b5f565ccbd5.jpg",$image->getUrl("800x800x#112233"));
