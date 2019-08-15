@@ -11,8 +11,6 @@ Just use the Composer:
     cd path/to/your/atk14/project/
     composer require atk14/pupiq-client
 
-    ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq.php lib/pupiq.php
-    ln -s ../vendor/atk14/pupiq-client/src/lib/pupiq_attachment.php lib/pupiq_attachment.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_attachment_field.php app/fields/pupiq_attachment_field.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_attachment_input.php app/widgets/pupiq_attachment_input.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
