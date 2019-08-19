@@ -58,4 +58,12 @@ class TcPupiq extends TcBase{
 		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.png");
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xt_e4493381151ea408.png",$image->getUrl("800x800xtransparent_or_#002233"));
 	}
+
+	function test_ToObject(){
+		$obj = Pupiq::ToObject("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.jpg");
+		$this->assertTrue(is_object($obj));
+
+		$this->assertEquals(null,Pupiq::ToObject(""));
+		$this->assertEquals(null,Pupiq::ToObject(null));
+	}
 }

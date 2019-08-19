@@ -55,7 +55,9 @@ class Pupiq {
 	 *	$pupiq = Pupiq::ToObject("http://i.pupiq.net/i/65/65/a53/1a53/756x1233/WSIRgf_756x1233_597a23f2092de822.jpg");
 	 */
 	static function ToObject($image_url){
-		return new Pupiq("$image_url");
+		if($image_url){
+			return new Pupiq("$image_url");
+		}
 	}
 
 	static function CreateImage($url_or_filename,&$err_msg = ""){
