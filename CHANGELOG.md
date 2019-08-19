@@ -1,3 +1,9 @@
+## [1.8] - 2019-08-19
+
+- Added method Pupiq::ToObject()
+- Added method Pupiq::getColors()
+- Added helper img_color
+
 ## [1.7] - 2019-04-08
 
 - Image border can be specified as transparent with a fallback color for jpg images (e.g. ```800x800xtransparent_or_#ffffff```)

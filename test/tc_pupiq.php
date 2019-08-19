@@ -42,6 +42,9 @@ class TcPupiq extends TcBase{
 
 		// cropping
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xc_442ea0bf0c2cd3c9.jpg",$image->getUrl("800x800xcrop"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xc_ac756ea1866ff62f.jpg",$image->getUrl("800x400xcrop"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xct_6fcbe211b5f8fad3.jpg",$image->getUrl("800x400xcrop,top"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x400xcb_cb6aa1d62e976200.jpg",$image->getUrl("800x400xcrop,bottom"));
 
 		// colored background
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800x112233_d6b32b5f565ccbd5.jpg",$image->getUrl("800x800x#112233"));
@@ -54,5 +57,13 @@ class TcPupiq extends TcBase{
 		// png -> transparent border
 		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.png");
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xt_e4493381151ea408.png",$image->getUrl("800x800xtransparent_or_#002233"));
+	}
+
+	function test_ToObject(){
+		$obj = Pupiq::ToObject("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.jpg");
+		$this->assertTrue(is_object($obj));
+
+		$this->assertEquals(null,Pupiq::ToObject(""));
+		$this->assertEquals(null,Pupiq::ToObject(null));
 	}
 }
