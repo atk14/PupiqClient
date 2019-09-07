@@ -2,6 +2,7 @@
 class PupiqAttachmentInput extends FileInput {
 
 	var $removal_enabled;
+	var $just_created_attachment;
 
 	function __construct($options = array()){
 		$options += array(
@@ -22,14 +23,23 @@ class PupiqAttachmentInput extends FileInput {
 		$out = parent::render($name, "", $options);
 		$n = "_{$name}_initial_";
 		$checkbox_remove = "_{$name}_remove_";
+
+		if($this->just_created_attachment){
+			$value = (string)$this->just_created_attachment;
+		}
+
 		$url = ($value && (is_string($value) || is_a($value,"PupiqAttachment") || is_a($value,"String"))) ? (string)$value : PupiqAttachmentInput::_UnpackValue($HTTP_REQUEST->getPostVar($n));
+
+		if($HTTP_REQUEST->getPostVar($checkbox_remove)){
+			$url = null;
+		}
 
 		if(!$url){ return $out; }
 
 		$p = new PupiqAttachment($url);
 		$image_url = $p->getUrl();
-		$removal_chekbox = $this->removal_enabled ? ' (<input type="checkbox" name="'.$checkbox_remove.'"> '._('remove').')' : '';
-		$out = '<br><a href="'.$image_url.'" class="xpull-left" title="'._('Download attachment').'">'.h($p->getFileName()).'</a>'.$removal_chekbox.'<br>'.$out;
+		$removal_chekbox = $this->removal_enabled ? '<br><input type="checkbox" name="'.$checkbox_remove.'"> '._('remove') : '';
+		$out = '<div class="clearfix"><a href="'.$image_url.'" title="'._('Download attachment').'">'.h($p->getFileName()).'</a>'.$out.$removal_chekbox.'</div>';
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqAttachmentInput::_PackValue($url).'">';
 
 		return $out;

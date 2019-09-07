@@ -2,6 +2,7 @@
 class PupiqImageInput extends FileInput{
 
 	var $removal_enabled;
+	var $just_created_image; // Pupiq
 
 	function __construct($options = array()){
 		$options += array(
@@ -22,7 +23,16 @@ class PupiqImageInput extends FileInput{
 		$out = parent::render($name, "", $options);
 		$n = "_{$name}_initial_";
 		$checkbox_remove = "_{$name}_remove_";
+
+		if($this->just_created_image){
+			$value = (string)$this->just_created_image;
+		}
+
 		$url = ($value && (is_string($value) || is_a($value,"Pupiq") || is_a($value,"String"))) ? (string)$value : PupiqImageInput::_UnpackValue($HTTP_REQUEST->getPostVar($n));
+
+		if($HTTP_REQUEST->getPostVar($checkbox_remove)){
+			$url = null;
+		}
 
 		if(!$url){ return $out; }
 
