@@ -43,7 +43,7 @@ class PupiqImageInput extends FileInput{
 		$image_url = $p->getUrl($geom);
 		$image_tag = $p->getImgTag("!100x100",array("attrs" => array("class" => "img-thumbnail", "style" => "margin-right: 12px;")));
 		$removal_chekbox = $this->removal_enabled ? '<br><input type="checkbox" name="'.$checkbox_remove.'"> '._('remove') : '';
-		$out = '<div class="clearfix"><a href="'.$image_url.'" class="pull-left" title="'._('Display image').'">'.$image_tag.'</a>'.$out.$removal_chekbox.'</div>'; //'<div style="clear: both;"></div>';
+		$out = '<div class="form-control-wrap"><a href="'.$image_url.'" class="pull-left" title="'._('Display image').'">'.$image_tag.'</a>'.$out.$removal_chekbox.'</div>'; //'<div style="clear: both;"></div>';
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqImageInput::_PackValue($url).'">';
 
 		return $out;
