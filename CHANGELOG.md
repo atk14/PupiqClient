@@ -1,3 +1,7 @@
+## [1.8.1] - 2019-09-07
+
+- PupiqImageInput and PupiqAttachmentInput tuned for usage in remote (XHR) forms
+
 ## [1.8] - 2019-08-19
 
 - Added method Pupiq::ToObject()
