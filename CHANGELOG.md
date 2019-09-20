@@ -1,3 +1,7 @@
+## [1.8.2] - 2019-09-20
+
+- Markup of form widgets tuned
+
 ## [1.8.1] - 2019-09-07
 
 - PupiqImageInput and PupiqAttachmentInput tuned for usage in remote (XHR) forms
