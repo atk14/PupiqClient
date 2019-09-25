@@ -1,3 +1,7 @@
+## [1.8.3] - 2019-09-25
+
+- Markup of form widgets tuned (more)
+
 ## [1.8.2] - 2019-09-20
 
 - Markup of form widgets tuned
