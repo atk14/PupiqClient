@@ -463,6 +463,45 @@ class Pupiq {
 		return $colors;
 	}
 
+	/**
+	 * Returns information about the original
+	 *
+	 *	$data = $pupiq->getOriginalInfo(); // ["id" => 8043, "filename" => "2_1a5e_1f6b.jpg", "filesize" => 19841366, "mime_type" => "image/jpeg", "created_at" => "2017-07-14 11:27:22"]
+	 */
+	function getOriginalInfo(){
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+
+		return $adf->get("originals/detail",array(
+			"url" => $this->getUrl(),
+			"auth_token" => $this->getAuthToken(),
+		));
+	}
+
+	/**
+	 * Returns the content of the original file
+	 *
+	 *	$original_content = $pupiq->downloadOriginal($headers);
+	 *  //
+	 *	$response->setHeaders($headers); // ['Content-Type' => 'image/jpeg', 'Content-Disposition' => 'attachment; filename="2_29910_29f57.jpg"', 'Content-Length' => '208331', ...]
+	 *	$response->write($original_content);
+	 */
+	function downloadOriginal(&$http_headers = array()){
+		$original_d = $this->getOriginalInfo();
+		$http_headers = array();
+		$http_headers["Content-Type"] = $original_d["mime_type"];
+		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$original_d["filename"]);
+		$http_headers["Content-Length"] = $original_d["filesize"];
+
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+
+		return $adf->post("originals/download",array(
+			"url" => $this->getUrl(),
+			"auth_token" => $this->getAuthToken(),
+		),array(
+			"return_raw_content" => true,
+		));
+	}
+
 	function getCode(){ return $this->_code; }
 
 	function getApiKey(){ return $this->_api_key; }
