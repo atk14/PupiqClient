@@ -1,3 +1,7 @@
+## [1.9] - 2019-10-22
+
+- Added methods Pupiq::getOriginalInfo() and Pupiq::downloadOriginal()
+
 ## [1.8.3] - 2019-09-25
 
 - Markup of form widgets tuned (more)
