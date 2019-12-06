@@ -36,7 +36,9 @@ class TcHelpers extends TcBase {
 		//
 		$this->assertEquals("#E7505B",smarty_modifier_img_color($image_url));
 		$this->assertEquals("#E7505B",smarty_modifier_img_color($image_url,"vibrant"));
+		$this->assertEquals("#E7505B",smarty_modifier_img_color($image_url,"vibrant or light_vibrant"));
 		$this->assertEquals("#D67E89",smarty_modifier_img_color($image_url,"light_vibrant"));
+		$this->assertEquals("#D67E89",smarty_modifier_img_color($image_url,"light_vibrant or vibrant"));
 		$this->assertEquals("#2CAC95",smarty_modifier_img_color($image_url,"dark_vibrant"));
 		$this->assertEquals("#6CB1AE",smarty_modifier_img_color($image_url,"muted"));
 		$this->assertEquals("#C69F9C",smarty_modifier_img_color($image_url,"light_muted"));
@@ -48,5 +50,6 @@ class TcHelpers extends TcBase {
 		//
 		$this->assertEquals("#9E6A0B",smarty_modifier_img_color($image_url,"vibrant"));
 		$this->assertEquals("",smarty_modifier_img_color($image_url,"light_vibrant"));
+		$this->assertEquals("#9E6A0B",smarty_modifier_img_color($image_url,"light_vibrant or vibrant"));
 	}
 }
