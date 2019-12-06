@@ -1,3 +1,7 @@
+## [1.10] - 2019-12-06
+
+- Helper img_color: multiple colors can be specified in the desired order
+
 ## [1.9] - 2019-10-22
 
 - Added methods Pupiq::getOriginalInfo() and Pupiq::downloadOriginal()
