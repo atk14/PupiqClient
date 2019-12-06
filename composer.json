@@ -16,7 +16,8 @@
                 "atk14/api-data-fetcher": ">=1.8.1 <2.0"
         },
         "require-dev": {
-                "atk14/tester": "*"
+                "atk14/tester": "*",
+                "atk14/http": "*"
         },
         "autoload": {
                 "classmap": ["src/lib"]
