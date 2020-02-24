@@ -1,3 +1,7 @@
+## [1.11] - 2020-02-24
+
+- Added method PupiqAttachment::getAttachmentId()
+
 ## [1.10] - 2019-12-06
 
 - Helper img_color: multiple colors can be specified in the desired order
