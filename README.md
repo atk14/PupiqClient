@@ -29,6 +29,14 @@ Write your PUPIQ API KEY into config/settings.php
 
     define("PUPIQ_API_KEY","1234567890abcdefghijklmopqrst");
 
+Optionally the following constants can be defined:
+
+    define("PUPIQ_API_URL","https://i.pupiq.net/api/");
+    define("PUPIQ_LANG","cs");
+    define("PUPIQ_IMG_HOSTNAME","i.pupiq.net");
+    define("PUPIQ_HTTPS",true);
+    define("PUPIQ_DEFAULT_WATERMARK_DEFINITION","default");
+
 Usage in templates
 ------------------
 
