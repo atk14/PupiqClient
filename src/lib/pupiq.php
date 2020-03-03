@@ -1,6 +1,6 @@
 <?php
 defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
-defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","http://i.pupiq.net/api/");
+defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","https://i.pupiq.net/api/");
 defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
 defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
