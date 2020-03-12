@@ -66,4 +66,25 @@ class TcPupiq extends TcBase{
 		$this->assertEquals(null,Pupiq::ToObject(""));
 		$this->assertEquals(null,Pupiq::ToObject(null));
 	}
+
+	function test_getAllowedAuthTokens(){
+		$pupiq = new Pupiq();
+
+		$tokens = $pupiq->getAllowedAuthTokens(array("current_time" => strtotime("2020-03-12 15:30:00")));
+		$this->assertEquals(array("101.5d41a0d152a07deef4e06cde9b7bba8fe836482b940bf1623513c654d3904156","101.e6aa5740355b714ed53434636c30c399a5ef8a016d275006aaad3964717b2972"),$tokens);
+
+		$tokens = $pupiq->getAllowedAuthTokens(array("current_time" => strtotime("2020-03-12 15:31:00")));
+		$this->assertEquals(array("101.5d41a0d152a07deef4e06cde9b7bba8fe836482b940bf1623513c654d3904156","101.e6aa5740355b714ed53434636c30c399a5ef8a016d275006aaad3964717b2972"),$tokens);
+
+		$tokens = $pupiq->getAllowedAuthTokens(array("current_time" => strtotime("2020-03-12 15:40:00")));
+		$this->assertEquals(array("101.921027304a702c0b149eb220ab43fe48d0f44efbf82d093a5c7059eb3d2b4fd8","101.5d41a0d152a07deef4e06cde9b7bba8fe836482b940bf1623513c654d3904156"),$tokens);
+
+		// -- salting
+
+		$tokens = $pupiq->getAllowedAuthTokens(array("current_time" => strtotime("2020-03-12 15:30:00"), "salt" => ""));
+		$this->assertEquals(array("101.5d41a0d152a07deef4e06cde9b7bba8fe836482b940bf1623513c654d3904156","101.e6aa5740355b714ed53434636c30c399a5ef8a016d275006aaad3964717b2972"),$tokens);
+
+		$tokens = $pupiq->getAllowedAuthTokens(array("current_time" => strtotime("2020-03-12 15:30:00"), "salt" => "somethingExtra"));
+		$this->assertEquals(array("101.6be61939394107966f049b800b52ba1e776d48e3bb8b78ab10bc528e7cdd0484","101.3baa559b223697577e9bce8ade1b388e4eebcf0388f2edb2bc4cea1111250d3d"),$tokens);
+	}
 }

@@ -529,13 +529,19 @@ class Pupiq {
 
 	/**
 	 * echo $pupiq->getAuthToken(); // "1.27dcf4b58864a6b44336df95d76681e3af4193a8297923b5ac193e5fa5ffc2b5"
+	 * echo $pupiq->getAuthToken(["salt" => "media_gallery"]);
+	 * echo $pupiq->getAuthToken("media_gallery");
 	 */
 	function getAuthToken($options = array()){
+		if(is_string($options)){
+			$options = array("salt" => $options);
+		}
 		$options += array(
-			"current_time" => time()
+			"current_time" => time(),
+			"salt" => "",
 		);
 		$t = $options["current_time"] - ($options["current_time"] % (60 * 10)); // kazdych 10 minut jiny token
-		return $this->getUserId().".".hash("sha256",$this->getApiKey().$t);
+		return $this->getUserId().".".hash("sha256",$this->getApiKey().$t.$options["salt"]);
 	}
 
 	/**
@@ -550,13 +556,27 @@ class Pupiq {
 	 *		)
 
 	 */
-	function getAllowedAuthTokens(){
-		$time = time();
-		return array_unique(array(
-			$this->getAuthToken(array("current_time" => $time)),
-			$this->getAuthToken(array("current_time" => $time + (5 * 60))),
-			$this->getAuthToken(array("current_time" => $time - (5 * 60))),
-		));
+	function getAllowedAuthTokens($options = array()){
+		$options += array(
+			"current_time" => time(),
+			"salt" => "",
+		);
+		$time = $options["current_time"];
+
+		$tokens = array();
+
+		$options["current_time"] = $time;
+		$tokens[] = $this->getAuthToken($options);
+
+		$options["current_time"] = $time + (5 * 60);
+		$tokens[] = $this->getAuthToken($options);
+
+		$options["current_time"] = $time - (5 * 60);
+		$tokens[] = $this->getAuthToken($options);
+
+		$tokens = array_unique($tokens);
+		$tokens = array_values($tokens);
+		return $tokens;
 	}
 
 	function getId(){ return $this->toString(); } // pro TableRecord & DbMole, TODO: to be removed
