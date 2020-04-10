@@ -30,7 +30,7 @@ class Pupiq {
 
 	protected $_lang = PUPIQ_LANG;
 
-	static protected $_SupportedImageFormats = array("jpg","png");
+	static protected $_SupportedImageFormats = array("jpg","png","svg");
 	static protected $_ImageFormatsSupportingTransparency = array("png");
 
 	function __construct($url_or_api_key = "",$api_key = null){

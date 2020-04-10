@@ -15,6 +15,10 @@ class TcPupiq extends TcBase{
 
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_246234d94216d836.jpg","$image");
 
+		// svg image
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.svg");
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_246234d94216d836.svg","$image");
+
 		// no image url given
 		$image = new Pupiq();
 		$this->assertEquals("","$image");
