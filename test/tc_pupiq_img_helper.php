@@ -56,6 +56,16 @@ class TcPupiqImgHelper extends TcBase {
 		$out = smarty_modifier_pupiq_img($svg_image, "800x600,enable_enlargement=0");
 		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/50f/2f50f/240x115/kzWFGm_240x115_5c0089cc671a5ceb.svg" alt="" width="240" height="115" />', $out);
 
+		// transparent or colorful background
+		$out = smarty_modifier_pupiq_img($jpeg_image, "800x600xtransparent_or_#aaff99");
+		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x600xaaff99_b7ae95b18f2ce0ce.jpg" alt="" width="800" height="600" />', $out);
+
+		$out = smarty_modifier_pupiq_img($png_image, "800x600xtransparent_or_#aaff99");
+		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/18/18/929x662/r31HRT_800x600xt_40f70390bcd0e4b4.png" alt="" width="800" height="600" />', $out);
+
+		$out = smarty_modifier_pupiq_img($svg_image, "800x600xtransparent_or_#aaff99");
+		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/50f/2f50f/240x115/kzWFGm_800x600xt_5fe1af67701909df.svg" alt="" width="800" height="600" />', $out);
+
 		// watermarks
 		$out = smarty_modifier_pupiq_img($jpeg_image, "800x600,watermark");
 		$this->assertEquals('<img src="http://i.pupiq.net/i/2/2/w/default/1/75c/75c1/1300x872/gQs7Nv_800x536_c5c9068b8d6da031.jpg" alt="" width="800" height="536" />',$out);

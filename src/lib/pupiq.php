@@ -31,7 +31,7 @@ class Pupiq {
 	protected $_lang = PUPIQ_LANG;
 
 	static protected $_SupportedImageFormats = array("jpg","png","svg");
-	static protected $_ImageFormatsSupportingTransparency = array("png");
+	static protected $_ImageFormatsSupportingTransparency = array("png","svg");
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -382,7 +382,7 @@ class Pupiq {
 		}
 		if(preg_match('/xt$/',$this->_transformation_string)){
 			// Transparent -> suffix needs to be png
-			$force_suffix = "png";
+			$force_suffix = in_array($force_suffix,self::$_ImageFormatsSupportingTransparency) ?  $force_suffix : self::$_ImageFormatsSupportingTransparency[0];
 		}
 		return $this->_transformation_string;
 	}
