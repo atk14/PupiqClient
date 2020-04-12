@@ -1,3 +1,7 @@
+## [1.12] - 2020-04-12
+
+- Added support for SVG images
+
 ## [1.11] - 2020-02-24
 
 - Added method PupiqAttachment::getAttachmentId()
