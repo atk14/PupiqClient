@@ -9,7 +9,7 @@ defined("PUPIQ_DEFAULT_WATERMARK_DEFINITION") || define("PUPIQ_DEFAULT_WATERMARK
 
 class Pupiq {
 
-	const VERSION = "1.11";
+	const VERSION = "1.12.1";
 
 	protected $_api_key = "";
 
@@ -30,8 +30,8 @@ class Pupiq {
 
 	protected $_lang = PUPIQ_LANG;
 
-	static protected $_SupportedImageFormats = array("jpg","png");
-	static protected $_ImageFormatsSupportingTransparency = array("png");
+	static protected $_SupportedImageFormats = array("jpg","png","svg");
+	static protected $_ImageFormatsSupportingTransparency = array("png","svg");
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -253,7 +253,7 @@ class Pupiq {
 		}
 
 		$options += array(
-			"enable_enlargement" => false,
+			"enable_enlargement" => null, // true or false; the default value is dependent on the image format, see below
 			"watermark" => null,
 			"format" => null, // "png", "jpg"
 		);
@@ -271,13 +271,18 @@ class Pupiq {
 			$transformation_string = $this->getOriginalWidth()."x".$this->getOriginalHeight();
 		}
 
-		// format
+		// Format: jpg, png or svg
 		$this->_format = null;
 		if($options["format"]){
 			if(!in_array($options["format"],self::$_SupportedImageFormats)){
 				throw new Exception("Pupiq: Invalid format $options[format], expecting ".join(" or ",self::$_SupportedImageFormats));
 			}
 			$this->_format = $options["format"];
+		}
+		$format = $this->_format ? $this->_format : preg_replace('/^.*\./','',$this->getUrl());
+
+		if(is_null($options["enable_enlargement"])){
+			$options["enable_enlargement"] = $format=="svg" ? true : false;
 		}
 
 		// 3. zapisy, ktere zachovavaji pomer stran
@@ -329,8 +334,7 @@ class Pupiq {
 			$border = $matches[3]; // transparent, #ffffff, transparent_or_#ffffff
 			
 			if(preg_match('/^transparent_or_(.*)/',$border,$matches)){
-				$_format = $this->_format ? $this->_format : preg_replace('/^.*\./','',$this->getUrl());
-				$border = in_array($_format,self::$_ImageFormatsSupportingTransparency) ? "transparent" : $matches[1]; // "transparent" or "#ffffff"
+				$border = in_array($format,self::$_ImageFormatsSupportingTransparency) ? "transparent" : $matches[1]; // "transparent" or "#ffffff"
 			}
 
 			if($border=="crop"){
@@ -378,7 +382,7 @@ class Pupiq {
 		}
 		if(preg_match('/xt$/',$this->_transformation_string)){
 			// Transparent -> suffix needs to be png
-			$force_suffix = "png";
+			$force_suffix = in_array($force_suffix,self::$_ImageFormatsSupportingTransparency) ?  $force_suffix : self::$_ImageFormatsSupportingTransparency[0];
 		}
 		return $this->_transformation_string;
 	}

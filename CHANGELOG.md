@@ -1,3 +1,12 @@
+## [1.12.1] - 2020-04-12
+
+- "Transparent or colorful background" option fixed for SVG images
+- For SVG images, the default value of enable_enlargement is true
+
+## [1.12] - 2020-04-12
+
+- Added support for SVG images
+
 ## [1.11] - 2020-02-24
 
 - Added method PupiqAttachment::getAttachmentId()
