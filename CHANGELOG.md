@@ -1,3 +1,7 @@
+## [1.12.2] - 2020-05-08
+
+- In PupiqImageInput, thumbnail transformation corrected
+
 ## [1.12.1] - 2020-04-12
 
 - "Transparent or colorful background" option fixed for SVG images
