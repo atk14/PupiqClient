@@ -369,12 +369,12 @@ class Pupiq {
 	}
 
 	/**
-	 * echo $pupiq->getTransformation($force_suffix); // "800x600", $force_suffix=="jpeg"
+	 * echo $pupiq->getTransformation($force_suffix); // "800x600", $force_suffix=="jpg"
 	 * echo $pupiq->getTransformation($force_suffix); // "800x600,transparent", $force_suffix=="png"
 	 */
 	function getTransformation(&$force_suffix = null){
 		$force_suffix = $this->_suffix;
-		if($this->_format){
+		if($this->_format && in_array($this->_format,array("jpg","png")) && in_array($this->_suffix,array("jpg","png"))){
 			$force_suffix = $this->_format;
 		}
 		if(!$this->_transformation_string){
