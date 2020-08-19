@@ -1,3 +1,7 @@
+## [1.12.3] - 2020-08-19
+
+- Fix: svg image can't be converted into png or jpg (the image stays as svg)
+
 ## [1.12.2] - 2020-05-08
 
 - In PupiqImageInput, thumbnail transformation corrected
