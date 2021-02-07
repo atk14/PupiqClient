@@ -1,3 +1,12 @@
+Change Log
+==========
+
+All notable changes to PupiqClient will be documented in this file.
+
+## [1.12.4] - 2021-02-07
+
+- Dependency updated
+
 ## [1.12.3] - 2020-08-19
 
 - Fix: svg image can't be converted into png or jpg (the image stays as svg)
