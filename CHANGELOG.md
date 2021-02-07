@@ -1,3 +1,36 @@
+## [1.12.1] - 2020-04-12
+
+- "Transparent or colorful background" option fixed for SVG images
+- For SVG images, the default value of enable_enlargement is true
+
+## [1.12] - 2020-04-12
+
+- Added support for SVG images
+
+## [1.11] - 2020-02-24
+
+- Added method PupiqAttachment::getAttachmentId()
+
+## [1.10] - 2019-12-06
+
+- Helper img_color: multiple colors can be specified in the desired order
+
+## [1.9] - 2019-10-22
+
+- Added methods Pupiq::getOriginalInfo() and Pupiq::downloadOriginal()
+
+## [1.8.3] - 2019-09-25
+
+- Markup of form widgets tuned (more)
+
+## [1.8.2] - 2019-09-20
+
+- Markup of form widgets tuned
+
+## [1.8.1] - 2019-09-07
+
+- PupiqImageInput and PupiqAttachmentInput tuned for usage in remote (XHR) forms
+
 ## [1.8] - 2019-08-19
 
 - Added method Pupiq::ToObject()

@@ -29,6 +29,14 @@ Write your PUPIQ API KEY into config/settings.php
 
     define("PUPIQ_API_KEY","1234567890abcdefghijklmopqrst");
 
+Optionally the following constants can be defined:
+
+    define("PUPIQ_API_URL","https://i.pupiq.net/api/");
+    define("PUPIQ_LANG","cs");
+    define("PUPIQ_IMG_HOSTNAME","i.pupiq.net");
+    define("PUPIQ_HTTPS",true);
+    define("PUPIQ_DEFAULT_WATERMARK_DEFINITION","default");
+
 Usage in templates
 ------------------
 
@@ -91,6 +99,33 @@ Consider an image in the original resolution 800x600. In the string variable $im
     Width is {$img|img_width:"80x80"} pixels
     Height is {$img|img_height:"80x80"} pixels
 
+### Detecting dominant colours
+
+Helper img_color returns dominant colour in the given image.
+
+    {$img|img_color}
+
+Name of the colour can be specified in the optional 2nd parameter.
+
+Possible names are:
+
+- vibrant
+- light_vibrant
+- dark_vibrant
+- muted
+- light_muted
+- dark_muted
+
+    {$img|img_color:"light_muted"}
+
+In some special cases the requested color may not be returned.
+
+    {$img|img_color:"light_vibrant"|default:"#FFFFFF"}
+
+It may be useful to specify multiple colors in the desired order.
+
+    {$img|img_color:"light_vibrant or light_muted or muted"|desired:"#FFFFFF"}
+  
 ### Watermarks
 
 At first you need to create one or more watermark definitions at address https://i.pupiq.net/api/cs/watermark_definitions/create_new/

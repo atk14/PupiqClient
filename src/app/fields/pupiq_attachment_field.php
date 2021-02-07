@@ -26,6 +26,8 @@ class PupiqAttachmentField extends FileField{
 			return array($err_msg,null);
 		}
 
+		$this->widget->just_created_attachment = $attachment;
+
 		return array(null,$attachment);
 	}
 }

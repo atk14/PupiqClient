@@ -1,5 +1,6 @@
 <?php
 class PupiqAttachment{
+
 	var $_url = "";
 
 	function __construct($url){
@@ -77,6 +78,17 @@ class PupiqAttachment{
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
 			return $mime_types[$suffix];
+		}
+	}
+
+	/**
+	 * Returns ID of the attachment stored in the Pupiq database
+	 *
+	 * @return int
+	 */
+	function getAttachmentId(){
+		if(preg_match('/https?:\/\/[^\/]+\/a\/[0-9a-f]+\/[0-9a-f]+\/[0-9a-f]+\/(?<attachment_id>[0-9a-f]+)\//',$this->getUrl(),$matches)){
+			return (int)hexdec($matches["attachment_id"]);
 		}
 	}
 

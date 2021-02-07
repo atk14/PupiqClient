@@ -2,6 +2,7 @@
 class PupiqImageInput extends FileInput{
 
 	var $removal_enabled;
+	var $just_created_image; // Pupiq
 
 	function __construct($options = array()){
 		$options += array(
@@ -22,7 +23,16 @@ class PupiqImageInput extends FileInput{
 		$out = parent::render($name, "", $options);
 		$n = "_{$name}_initial_";
 		$checkbox_remove = "_{$name}_remove_";
+
+		if($this->just_created_image){
+			$value = (string)$this->just_created_image;
+		}
+
 		$url = ($value && (is_string($value) || is_a($value,"Pupiq") || is_a($value,"String"))) ? (string)$value : PupiqImageInput::_UnpackValue($HTTP_REQUEST->getPostVar($n));
+
+		if($HTTP_REQUEST->getPostVar($checkbox_remove)){
+			$url = null;
+		}
 
 		if(!$url){ return $out; }
 
@@ -32,8 +42,8 @@ class PupiqImageInput extends FileInput{
 		$geom = ($width>800 || $height>800 || !$width || !$height) ? "800x800" : "{$width}x$height";
 		$image_url = $p->getUrl($geom);
 		$image_tag = $p->getImgTag("!100x100",array("attrs" => array("class" => "img-thumbnail", "style" => "margin-right: 12px;")));
-		$removal_chekbox = $this->removal_enabled ? '<br><input type="checkbox" name="'.$checkbox_remove.'"> '._('remove') : '';
-		$out = '<div class="clearfix"><a href="'.$image_url.'" class="pull-left" title="'._('Display image').'">'.$image_tag.'</a>'.$out.$removal_chekbox.'</div>'; //'<div style="clear: both;"></div>';
+		$removal_chekbox = $this->removal_enabled ? ' <input type="checkbox" name="'.$checkbox_remove.'"> '._('remove') : '';
+		$out = '<div class="form-control-wrap"><a href="'.$image_url.'" class="pull-left" title="'._('Display image').'">'.$image_tag.'</a>'.$removal_chekbox.$out.'</div>'; //'<div style="clear: both;"></div>';
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqImageInput::_PackValue($url).'">';
 
 		return $out;

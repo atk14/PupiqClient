@@ -29,6 +29,8 @@ class PupiqImageField extends ImageField{
 			return array($err_msg,null);
 		}
 
+		$this->widget->just_created_image = $pupiq;
+
 		return array(null,$pupiq);
 	}
 }

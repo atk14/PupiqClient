@@ -1,6 +1,6 @@
 <?php
 defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
-defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","http://i.pupiq.net/api/");
+defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","https://i.pupiq.net/api/");
 defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
 defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
@@ -9,7 +9,7 @@ defined("PUPIQ_DEFAULT_WATERMARK_DEFINITION") || define("PUPIQ_DEFAULT_WATERMARK
 
 class Pupiq {
 
-	const VERSION = "1.7";
+	const VERSION = "1.12.1";
 
 	protected $_api_key = "";
 
@@ -30,8 +30,8 @@ class Pupiq {
 
 	protected $_lang = PUPIQ_LANG;
 
-	static protected $_SupportedImageFormats = array("jpg","png");
-	static protected $_ImageFormatsSupportingTransparency = array("png");
+	static protected $_SupportedImageFormats = array("jpg","png","svg");
+	static protected $_ImageFormatsSupportingTransparency = array("png","svg");
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -253,7 +253,7 @@ class Pupiq {
 		}
 
 		$options += array(
-			"enable_enlargement" => false,
+			"enable_enlargement" => null, // true or false; the default value is dependent on the image format, see below
 			"watermark" => null,
 			"format" => null, // "png", "jpg"
 		);
@@ -271,13 +271,18 @@ class Pupiq {
 			$transformation_string = $this->getOriginalWidth()."x".$this->getOriginalHeight();
 		}
 
-		// format
+		// Format: jpg, png or svg
 		$this->_format = null;
 		if($options["format"]){
 			if(!in_array($options["format"],self::$_SupportedImageFormats)){
 				throw new Exception("Pupiq: Invalid format $options[format], expecting ".join(" or ",self::$_SupportedImageFormats));
 			}
 			$this->_format = $options["format"];
+		}
+		$format = $this->_format ? $this->_format : preg_replace('/^.*\./','',$this->getUrl());
+
+		if(is_null($options["enable_enlargement"])){
+			$options["enable_enlargement"] = $format=="svg" ? true : false;
 		}
 
 		// 3. zapisy, ktere zachovavaji pomer stran
@@ -329,8 +334,7 @@ class Pupiq {
 			$border = $matches[3]; // transparent, #ffffff, transparent_or_#ffffff
 			
 			if(preg_match('/^transparent_or_(.*)/',$border,$matches)){
-				$_format = $this->_format ? $this->_format : preg_replace('/^.*\./','',$this->getUrl());
-				$border = in_array($_format,self::$_ImageFormatsSupportingTransparency) ? "transparent" : $matches[1]; // "transparent" or "#ffffff"
+				$border = in_array($format,self::$_ImageFormatsSupportingTransparency) ? "transparent" : $matches[1]; // "transparent" or "#ffffff"
 			}
 
 			if($border=="crop"){
@@ -378,7 +382,7 @@ class Pupiq {
 		}
 		if(preg_match('/xt$/',$this->_transformation_string)){
 			// Transparent -> suffix needs to be png
-			$force_suffix = "png";
+			$force_suffix = in_array($force_suffix,self::$_ImageFormatsSupportingTransparency) ?  $force_suffix : self::$_ImageFormatsSupportingTransparency[0];
 		}
 		return $this->_transformation_string;
 	}
@@ -461,6 +465,45 @@ class Pupiq {
 		}
 
 		return $colors;
+	}
+
+	/**
+	 * Returns information about the original
+	 *
+	 *	$data = $pupiq->getOriginalInfo(); // ["id" => 8043, "filename" => "2_1a5e_1f6b.jpg", "filesize" => 19841366, "mime_type" => "image/jpeg", "created_at" => "2017-07-14 11:27:22"]
+	 */
+	function getOriginalInfo(){
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+
+		return $adf->get("originals/detail",array(
+			"url" => $this->getUrl(),
+			"auth_token" => $this->getAuthToken(),
+		));
+	}
+
+	/**
+	 * Returns the content of the original file
+	 *
+	 *	$original_content = $pupiq->downloadOriginal($headers);
+	 *  //
+	 *	$response->setHeaders($headers); // ['Content-Type' => 'image/jpeg', 'Content-Disposition' => 'attachment; filename="2_29910_29f57.jpg"', 'Content-Length' => '208331', ...]
+	 *	$response->write($original_content);
+	 */
+	function downloadOriginal(&$http_headers = array()){
+		$original_d = $this->getOriginalInfo();
+		$http_headers = array();
+		$http_headers["Content-Type"] = $original_d["mime_type"];
+		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$original_d["filename"]);
+		$http_headers["Content-Length"] = $original_d["filesize"];
+
+		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+
+		return $adf->post("originals/download",array(
+			"url" => $this->getUrl(),
+			"auth_token" => $this->getAuthToken(),
+		),array(
+			"return_raw_content" => true,
+		));
 	}
 
 	function getCode(){ return $this->_code; }
