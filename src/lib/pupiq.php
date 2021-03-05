@@ -30,8 +30,8 @@ class Pupiq {
 
 	protected $_lang = PUPIQ_LANG;
 
-	static protected $_SupportedImageFormats = array("jpg","png","svg");
-	static protected $_ImageFormatsSupportingTransparency = array("png","svg");
+	static protected $_SupportedImageFormats = array("jpg","png","webp","svg");
+	static protected $_ImageFormatsSupportingTransparency = array("png","svg","webp");
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -374,7 +374,7 @@ class Pupiq {
 	 */
 	function getTransformation(&$force_suffix = null){
 		$force_suffix = $this->_suffix;
-		if($this->_format && in_array($this->_format,array("jpg","png")) && in_array($this->_suffix,array("jpg","png"))){
+		if($this->_format && in_array($this->_format,array("jpg","png","webp")) && in_array($this->_suffix,array("jpg","png","webp"))){
 			$force_suffix = $this->_format;
 		}
 		if(!$this->_transformation_string){
