@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14] - 2021-03-19
+
+- Added support for WebP images
+
 ## [1.13] - 2021-02-08
 
 - Added AsyncPupiqAttachmentField (package atk14/async-file-field needs to be installed in order to use AsyncPupiqAttachmentField)
