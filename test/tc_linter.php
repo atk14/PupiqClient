@@ -9,7 +9,7 @@ class TcLinter extends TcBase {
 			"vendor",
 		);
 
-		$files = Files::FindFiles(__DIR__ . "/../",["pattern" => '/\.('.join('|',$suffixes).')$/']);
+		$files = Files::FindFiles(__DIR__ . "/../",array("pattern" => '/\.('.join('|',$suffixes).')$/'));
 
 		foreach($files as $file){
 			$_file = str_replace(__DIR__ . "/../","",$file);
