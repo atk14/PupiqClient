@@ -43,6 +43,7 @@ class TcPupiq extends TcBase{
 
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.jpg",$image->getUrl("800x800"));
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.png",$image->getUrl("800x800,format=png"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.jpg",$image->getUrl("800x800,format=jpg"));
 
 		// cropping
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xc_d3d44c33f84756c0.jpg",$image->getUrl("800x800xcrop"));
@@ -61,6 +62,16 @@ class TcPupiq extends TcBase{
 		// png -> transparent border
 		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.png");
 		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x800xt_e62352d612057e07.png",$image->getUrl("800x800xtransparent_or_#002233"));
+
+		// svg can't be converted into png or jpg
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.svg");
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.svg",$image->getUrl("800x800,format=png"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.svg",$image->getUrl("800x800,format=jpg"));
+	
+		// png can be converted into jpg but not into svg
+		$image = new Pupiq("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x537_f6dd0e0882712ab1.png");
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.jpg",$image->getUrl("800x800,format=jpg"));
+		$this->assertEquals("http://i.pupiq.net/i/2/2/75c/75c1/1300x872/gQs7Nv_800x536_28caf7fe5e3a333b.png",$image->getUrl("800x800,format=svg"));
 	}
 
 	function test_ToObject(){

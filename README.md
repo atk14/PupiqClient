@@ -11,10 +11,12 @@ Just use the Composer:
     cd path/to/your/atk14/project/
     composer require atk14/pupiq-client
 
-    ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_attachment_field.php app/fields/pupiq_attachment_field.php
-    ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_attachment_input.php app/widgets/pupiq_attachment_input.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_attachment_field.php app/fields/pupiq_attachment_field.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_attachment_input.php app/widgets/pupiq_attachment_input.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/fields/async_pupiq_attachment_field.php app/fields/async_pupiq_attachment_field.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/async_pupiq_attachment_input.php app/widgets/async_pupiq_attachment_input.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_url.php app/helpers/modifier.img_url.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_attrs.php app/helpers/modifier.img_attrs.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_height.php app/helpers/modifier.img_height.php
