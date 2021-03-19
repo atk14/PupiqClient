@@ -60,6 +60,13 @@ class Pupiq {
 		}
 	}
 
+	/**
+	 *
+	 *	$image = Pupiq::CreateImage("https://example.com/images/flower.jpg");
+	 *
+	 *	$image = Pupiq::CreateImage("/path/to/flower.jpg");
+	 *	$image = Pupiq::CreateImage(["path" => "/path/to/temp_file", "name" => "flower.jpg"]);
+	 */
 	static function CreateImage($url_or_filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
 
@@ -69,14 +76,27 @@ class Pupiq {
 		$options = array(
 			"acceptable_error_codes" => array(400,403),
 		);
-		$file = null;
+
+		$url = null;
+		$file = array();
+
+		if(is_array($url_or_filename)){
+			$file = $url_or_filename + array(
+				"path" => null, // "/path/to/a/tempory_file"
+				"name" => null, // "photo.jpg"
+			);
+		}elseif(preg_match('/^https?:/',$url_or_filename)){
+			$url = $url_or_filename;
+		}else{
+			$file["path"] = $url_or_filename;
+		}
 
 		$adf = new ApiDataFetcher(PUPIQ_API_URL);
-		if(preg_match('/^https?:/',$url_or_filename)){
-			$params["url"] = $url_or_filename;
+		if($url){
+			$params["url"] = $url;
 			$data = $adf->post("images/create_new",$params,$options);
 		}else{
-			$data = $adf->postFile("images/create_new",$url_or_filename,$params,$options);
+			$data = $adf->postFile("images/create_new",$file,$params,$options);
 		}
 
 		if(!$data){
