@@ -9,7 +9,7 @@ defined("PUPIQ_DEFAULT_WATERMARK_DEFINITION") || define("PUPIQ_DEFAULT_WATERMARK
 
 class Pupiq {
 
-	const VERSION = "1.14";
+	const VERSION = "1.14.1";
 
 	protected $_api_key = "";
 

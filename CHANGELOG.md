@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.1] - 2021-10-20
+
+- Added mime type detection for webp images into PupiqAttachment
+
 ## [1.14] - 2021-03-19
 
 - Added support for WebP images
