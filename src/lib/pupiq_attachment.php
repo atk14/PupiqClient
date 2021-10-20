@@ -56,6 +56,7 @@ class PupiqAttachment{
 			"gif" => "image/gif",
 			"svg" => "image/svg+xml",
 			"bmp" => "image/bmp",
+			"webp" => "image/webp",
 
 			"doc" => "application/msword",
 			"xls" => "application/vnd.ms-excel",
