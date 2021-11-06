@@ -46,7 +46,7 @@ class PupiqAttachment{
 	}
 
 	/**
-	 * eco $attachment->getMimeType(); // "application/pdf"
+	 * echo $attachment->getMimeType(); // "application/pdf"
 	 */
 	function getMimeType(){
 		static $mime_types = array(
@@ -75,6 +75,14 @@ class PupiqAttachment{
 			"zip" => "application/zip",
 
 			"mp3" => "audio/mpeg",
+
+			"apk" => "application/vnd.android.package-archive",
+			"jar" => "application/java-archive",
+
+			"avi" => "video/x-msvideo",
+			"mkv" => "video/x-matroska",
+			"mp4" => "video/mp4",
+			"mov" => "video/quicktime",
 		);
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
