@@ -89,7 +89,7 @@ class Pupiq {
 			$file["path"] = $url_or_filename;
 		}
 
-		$adf = $this->_getApiDataFetcher();
+		$adf = self::_GetApiDataFetcher();
 		if($url){
 			$params["url"] = $url;
 			$data = $adf->post("images/create_new",$params,$options);
@@ -126,7 +126,7 @@ class Pupiq {
 	static function CreateAttachment($path_to_file,$filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
 
-		$adf = $this->_getApiDataFetcher();
+		$adf = self::_GetApiDataFetcher();
 		$data = $adf->postFile("attachments/create_new",array(
 			"path" => $path_to_file,
 			"name" => $filename 
@@ -456,7 +456,7 @@ class Pupiq {
 	 * @return array
 	 */
 	function getColors(){
-		$adf = $this->_getApiDataFetcher();
+		$adf = self::_GetApiDataFetcher();
 
 		try {
 			$colors = $adf->get("image_colors/detail",array(
@@ -491,7 +491,7 @@ class Pupiq {
 	 *	$data = $pupiq->getOriginalInfo(); // ["id" => 8043, "filename" => "2_1a5e_1f6b.jpg", "filesize" => 19841366, "mime_type" => "image/jpeg", "created_at" => "2017-07-14 11:27:22"]
 	 */
 	function getOriginalInfo(){
-		$adf = $this->_getApiDataFetcher();
+		$adf = self::_GetApiDataFetcher();
 
 		return $adf->get("originals/detail",array(
 			"url" => $this->getUrl(),
@@ -514,7 +514,7 @@ class Pupiq {
 		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$original_d["filename"]);
 		$http_headers["Content-Length"] = $original_d["filesize"];
 
-		$adf = $this->_getApiDataFetcher();
+		$adf = self::_GetApiDataFetcher();
 
 		return $adf->post("originals/download",array(
 			"url" => $this->getUrl(),
@@ -585,7 +585,7 @@ class Pupiq {
 	function toString(){ return (string)$this->getUrl(); }
 	function __toString(){ return $this->toString(); }
 
-	protected function _getApiDataFetcher(){
+	protected static function _GetApiDataFetcher(){
 		global $ATK14_GLOBAL;
 
 		$server_supported_langs = array("cs","sk","ru","en","de");
