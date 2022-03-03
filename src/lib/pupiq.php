@@ -1,7 +1,7 @@
 <?php
 defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
 defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","https://i.pupiq.net/api/");
-defined("PUPIQ_LANG") || define("PUPIQ_LANG","cs");
+defined("PUPIQ_LANG") || define("PUPIQ_LANG","auto"); // "auto", "cs", "en"...
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
 defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
 defined("PUPIQ_HTTPS") || define("PUPIQ_HTTPS",(!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") || (!empty($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] == 443));
@@ -27,8 +27,6 @@ class Pupiq {
 	protected $_image_id;
 	protected $_watermark; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
 	protected $_watermark_revision; // 1, 2, 3...
-
-	protected $_lang = PUPIQ_LANG;
 
 	static protected $_SupportedImageFormats = array("jpg","png","webp","svg");
 	static protected $_ImageFormatsSupportingTransparency = array("png","svg","webp");
@@ -91,7 +89,7 @@ class Pupiq {
 			$file["path"] = $url_or_filename;
 		}
 
-		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$adf = $this->_getApiDataFetcher();
 		if($url){
 			$params["url"] = $url;
 			$data = $adf->post("images/create_new",$params,$options);
@@ -128,7 +126,7 @@ class Pupiq {
 	static function CreateAttachment($path_to_file,$filename,&$err_msg = ""){
 		$pupiq = new Pupiq();
 
-		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$adf = $this->_getApiDataFetcher();
 		$data = $adf->postFile("attachments/create_new",array(
 			"path" => $path_to_file,
 			"name" => $filename 
@@ -458,7 +456,7 @@ class Pupiq {
 	 * @return array
 	 */
 	function getColors(){
-		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$adf = $this->_getApiDataFetcher();
 
 		try {
 			$colors = $adf->get("image_colors/detail",array(
@@ -493,7 +491,7 @@ class Pupiq {
 	 *	$data = $pupiq->getOriginalInfo(); // ["id" => 8043, "filename" => "2_1a5e_1f6b.jpg", "filesize" => 19841366, "mime_type" => "image/jpeg", "created_at" => "2017-07-14 11:27:22"]
 	 */
 	function getOriginalInfo(){
-		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$adf = $this->_getApiDataFetcher();
 
 		return $adf->get("originals/detail",array(
 			"url" => $this->getUrl(),
@@ -516,7 +514,7 @@ class Pupiq {
 		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$original_d["filename"]);
 		$http_headers["Content-Length"] = $original_d["filesize"];
 
-		$adf = new ApiDataFetcher(PUPIQ_API_URL);
+		$adf = $this->_getApiDataFetcher();
 
 		return $adf->post("originals/download",array(
 			"url" => $this->getUrl(),
@@ -586,6 +584,28 @@ class Pupiq {
 	function getId(){ return $this->toString(); } // pro TableRecord & DbMole, TODO: to be removed
 	function toString(){ return (string)$this->getUrl(); }
 	function __toString(){ return $this->toString(); }
+
+	protected function _getApiDataFetcher(){
+		global $ATK14_GLOBAL;
+
+		$server_supported_langs = array("cs","sk","ru","en","de");
+
+		$default_lang = isset($ATK14_GLOBAL) ? $ATK14_GLOBAL->getLang() : "en";
+		if(!in_array($default_lang,$server_supported_langs)){
+			$default_lang = "en";
+		}
+
+		$lang = PUPIQ_LANG == "auto" ? $default_lang : PUPIQ_LANG;
+
+		if(!in_array($lang,$server_supported_langs)){
+			$lang = $default_lang;
+		}
+
+		$adf = new ApiDataFetcher(PUPIQ_API_URL,array(
+			"lang" => $lang,
+		));
+		return $adf;
+	}
 
 	protected function _resetObjectState(){
 		$this->_url = null;
