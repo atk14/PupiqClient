@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.3] - 2022-03-03
+
+- 835ab22, 15108a3 - Using the right language in API calls
+
 ## [1.14.2] - 2021-10-20
 
 - 3da4289 - Added more mime types into PupiqAttachment
