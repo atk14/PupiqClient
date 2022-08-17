@@ -83,6 +83,9 @@ class PupiqAttachment{
 			"mkv" => "video/x-matroska",
 			"mp4" => "video/mp4",
 			"mov" => "video/quicktime",
+
+			"ics" => "text/calendar",
+			"ifb" => "text/calendar",
 		);
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
