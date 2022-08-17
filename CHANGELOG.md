@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.4] - 2022-08-17
+
+* 009e955 - Added mime type text/calendar
+
 ## [1.14.3] - 2022-03-03
 
 - 835ab22, 15108a3 - Using the right language in API calls
