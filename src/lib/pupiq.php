@@ -229,6 +229,19 @@ class Pupiq {
 		return "$base_href{$code}_".urlencode($transformation_string)."_$token.$suffix";
 	}
 
+	/**
+	 *
+	 * 	$pupiq = new Pupiq($image_url);
+	 *	echo $pupiq->getFormat(); // "jpg", "webp", "svg", "png"...
+	 *	echo $pupiq->getFormat("100x100,format=png"); // "png"
+	 */
+	function getFormat($transformation_string = null){
+		$url = $this->getUrl($transformation_string);
+		if(preg_match('/\.([a-z]{1,5})$/',$url,$matches)){
+			return $matches[1];
+		}
+	}
+
 	protected function _getBaseHref(){
 		$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
 		$watermark = $this->_watermark ? "w/$this->_watermark/$this->_watermark_revision/" : "";

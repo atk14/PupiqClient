@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../src/app/helpers/modifier.img_url.php");
 require_once(__DIR__ . "/../src/app/helpers/modifier.img_width.php");
 require_once(__DIR__ . "/../src/app/helpers/modifier.img_height.php");
 require_once(__DIR__ . "/../src/app/helpers/modifier.img_color.php");
+require_once(__DIR__ . "/../src/app/helpers/modifier.img_format.php");
 
 class TcHelpers extends TcBase {
 
@@ -51,5 +52,15 @@ class TcHelpers extends TcBase {
 		$this->assertEquals("#9E6A0B",smarty_modifier_img_color($image_url,"vibrant"));
 		$this->assertEquals("",smarty_modifier_img_color($image_url,"light_vibrant"));
 		$this->assertEquals("#9E6A0B",smarty_modifier_img_color($image_url,"light_vibrant or vibrant"));
+	}
+
+	function test_modifier_img_format(){
+		$image_url = "https://i.pupiq.net/i/65/65/27e/2927e/1272x920/9cUpr1_800x800xc_6c2a983e5ac4792b.jpg";
+		$this->assertEquals("jpg",smarty_modifier_img_format($image_url));
+
+		$image_url = "https://i.pupiq.net/i/65/65/27e/2927e/1272x920/9cUpr1_800x800xc_6c2a983e5ac4792b.webp";
+		$this->assertEquals("webp",smarty_modifier_img_format($image_url));
+
+		$this->assertEquals("png",smarty_modifier_img_format($image_url,"100x100,format=png"));
 	}
 }

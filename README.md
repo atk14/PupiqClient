@@ -22,6 +22,7 @@ Just use the Composer:
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_height.php app/helpers/modifier.img_height.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_width.php app/helpers/modifier.img_width.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_color.php app/helpers/modifier.img_color.php
+    ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.img_format.php app/helpers/modifier.img_format.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
 
 Configuration
