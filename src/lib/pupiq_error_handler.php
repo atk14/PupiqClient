@@ -54,7 +54,7 @@ class PupiqErrorHandler{
 		}
 
 		// Just make sure that an image is an image
-		if($image_uri && !preg_match('/^image\//',$uf->getContentType())){
+		if($image_uri && !preg_match('/^image\//',(string)$uf->getContentType())){
 			self::_ExportUrlFetcher($response,$uf);
 			return;
 		}
