@@ -3,6 +3,11 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.6] - 2022-11-28
+
+* cf65cb6 - PHP8.1 compatibility
+* 6e784fd - Added support for AVIF images 
+
 ## [1.14.5] - 2022-09-05
 
 * 03727e7 - Added method Pupiq::getFormat() and helper img_format
