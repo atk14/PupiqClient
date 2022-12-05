@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.7] - 2022-12-05
+
+* a40ea43 - Added mime types for AVIF images and APK files
+
 ## [1.14.6] - 2022-11-28
 
 * cf65cb6 - PHP8.1 compatibility
