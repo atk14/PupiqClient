@@ -57,6 +57,7 @@ class PupiqAttachment{
 			"svg" => "image/svg+xml",
 			"bmp" => "image/bmp",
 			"webp" => "image/webp",
+			"avif" => "image/avif",
 
 			"doc" => "application/msword",
 			"xls" => "application/vnd.ms-excel",
@@ -86,6 +87,8 @@ class PupiqAttachment{
 
 			"ics" => "text/calendar",
 			"ifb" => "text/calendar",
+
+			"apk" => "application/vnd.android.package-archive",
 		);
 		$suffix = strtolower($this->getSuffix());
 		if(isset($mime_types[$suffix])){
