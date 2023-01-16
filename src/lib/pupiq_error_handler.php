@@ -46,6 +46,7 @@ class PupiqErrorHandler{
 		if(!$uf->found()){
 			if(!$uf->getStatusCode()){
 				// hmmm.. no status code? it looks like an error on the network
+				trigger_error("PupiqErrorHandler: " . ($uf->getErrorMessage() ? $uf->getErrorMessage() : "no status code on $url"));
 				$response->internalServerError();
 			}else{
 				self::_ExportUrlFetcher($response,$uf);
