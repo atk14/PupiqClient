@@ -617,6 +617,7 @@ class Pupiq {
 		$adf = new ApiDataFetcher(PUPIQ_API_URL,array(
 			"lang" => $lang,
 		));
+		$adf->setSocketTimeout(30.0);
 		return $adf;
 	}
 
