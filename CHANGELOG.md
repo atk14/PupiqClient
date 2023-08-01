@@ -3,6 +3,13 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.8] - 2023-08-01
+
+* 1de1ebb - Socket timeout increased
+* 484b98f - Required PHP >=5.6 and api/api-data-fetcher >=1.10.8 <2.0
+* 6eaa94c - Using mod_rewrite instead of ErrorDocument
+* 7d89553 - Using trigger_error() in PupiqErrorHandler
+
 ## [1.14.7] - 2022-12-05
 
 * a40ea43 - Added mime types for AVIF images and APK files
