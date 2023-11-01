@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.9] - 2023-11-01
+
+* 6929557 - A chessboard background used in PupiqImageInput
+
 ## [1.14.8] - 2023-08-01
 
 * 1de1ebb - Socket timeout increased
