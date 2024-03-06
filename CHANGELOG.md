@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.10] - 2024-03-06
+
+* 3c05e26 - Markup for the removal checkbox tuned
+
 ## [1.14.9] - 2023-11-01
 
 * 6929557 - A chessboard background used in PupiqImageInput
