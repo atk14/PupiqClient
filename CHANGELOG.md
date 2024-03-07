@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.11] - 2024-03-07
+
+* d889ab9 - Markup for the removal checkboxes tuned
+
 ## [1.14.10] - 2024-03-06
 
 * 3c05e26 - Markup for the removal checkbox tuned
