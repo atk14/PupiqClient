@@ -38,7 +38,7 @@ class PupiqAttachmentInput extends FileInput {
 
 		$p = new PupiqAttachment($url);
 		$image_url = $p->getUrl();
-		$removal_chekbox = $this->removal_enabled ? ' <input type="checkbox" name="'.$checkbox_remove.'"> '._('remove') : '';
+		$removal_chekbox = $this->removal_enabled ? ' <span class="file_removal_checkbox"><input type="checkbox" name="'.$checkbox_remove.'"> '._('remove').'</span>' : '';
 		$out = '<div class="form-control-wrap"><a href="'.$image_url.'" title="'._('Download attachment').'">'.h($p->getFileName()).'</a>'.$removal_chekbox.$out.'</div>';
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqAttachmentInput::_PackValue($url).'">';
 
