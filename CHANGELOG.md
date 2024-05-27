@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.12] - 2024-05-27
+
+* 259f222 - Added support for GIF images
+
 ## [1.14.11] - 2024-03-07
 
 * d889ab9 - Markup for the removal checkboxes tuned
