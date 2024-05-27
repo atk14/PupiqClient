@@ -28,8 +28,8 @@ class Pupiq {
 	protected $_watermark; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
 	protected $_watermark_revision; // 1, 2, 3...
 
-	static protected $_SupportedImageFormats = array("jpg","png","webp","avif","svg");
-	static protected $_ImageFormatsSupportingTransparency = array("png","svg","webp","avif");
+	static protected $_SupportedImageFormats = array("jpg", "png", "webp", "avif", "gif", "svg");
+	static protected $_ImageFormatsSupportingTransparency = array("png", "svg", "webp", "avif", "gif");
 
 	function __construct($url_or_api_key = "",$api_key = null){
 		$url = "";
@@ -405,7 +405,7 @@ class Pupiq {
 	 */
 	function getTransformation(&$force_suffix = null){
 		$force_suffix = $this->_suffix;
-		if($this->_format && in_array($this->_format,array("jpg","png","webp","avif")) && in_array($this->_suffix,array("jpg","png","webp","avif"))){
+		if($this->_format && in_array($this->_format,array("jpg","png","webp","avif","gif")) && in_array($this->_suffix,array("jpg","png","webp","avif","gif"))){
 			$force_suffix = $this->_format;
 		}
 		if(!$this->_transformation_string){
