@@ -32,6 +32,7 @@ class Pupiq {
 	static protected $_ImageFormatsSupportingTransparency = array("png", "svg", "webp", "avif", "gif");
 
 	function __construct($url_or_api_key = "",$api_key = null){
+		$url_or_api_key = (string)$url_or_api_key;
 		$url = "";
 		if(preg_match('/^http/',$url_or_api_key)){
 			$url = $url_or_api_key;
