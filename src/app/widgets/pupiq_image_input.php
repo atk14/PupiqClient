@@ -42,6 +42,7 @@ class PupiqImageInput extends FileInput{
 		$geom = ($width>800 || $height>800 || !$width || !$height) ? "800x800" : "{$width}x$height";
 		$image_url = $p->getUrl($geom);
 		$image_tag = $p->getImgTag("100x100xtransparent",array("attrs" => array("class" => "img-thumbnail", "style" => "margin-right: 12px; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQMAAABJtOi3AAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAAlwSFlzAAAOdQAADnUBuWNRMgAAAAZQTFRF29vb4+PjNRpY5wAAABRJREFUCNdjYPgPhEQQRCpjoLJ5AO29P8G2eCQbAAAAAElFTkSuQmCC');")));
+		$image_tag .= '<br><small style="display: block; width: 100px; background-color: grey; color: white; text-align: center; text-decoration: none;">'.sprintf("%sx%s %s",$p->getOriginalWidth(),$p->getOriginalHeight(),$p->getFormat()).'</small>';
 		$removal_chekbox = $this->removal_enabled ? ' <span class="file_removal_checkbox"><input type="checkbox" name="'.$checkbox_remove.'"> '._('remove').'</span>' : '';
 		$out = '<div class="form-control-wrap"><a href="'.$image_url.'" class="pull-left" title="'._('Display image').'">'.$image_tag.'</a>'.$removal_chekbox.$out.'</div>'; //'<div style="clear: both;"></div>';
 		$out .= '<input type="hidden" name="'.$n.'" value="'.PupiqImageInput::_PackValue($url).'">';
