@@ -16,10 +16,10 @@
  * @param string $attrs additional attributes for img tag
  */
 function smarty_modifier_pupiq_img($url,$geometry = "100",$attrs=null){
-	if(!$url){ return; }
 	if(is_object($url)){
 		$url = $url->getUrl();
 	}
+	if(!$url){ return; }
 
 	// Other parameters can be passed as an formatted string, e.g. "class='image image-warning',title='Warning sign',"
 	$attrsAr = PupiqUtils::DecodeParams($attrs);
