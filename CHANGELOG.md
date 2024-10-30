@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.14] - 2024-08-20
+
+* Form widget for PupiqImageField improved
+
 ## [1.14.13] - 2024-08-20
 
 * f9d6ee7 - PHP8.1 compatibility issue
