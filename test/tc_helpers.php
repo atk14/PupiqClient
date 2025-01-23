@@ -18,8 +18,8 @@ class TcHelpers extends TcBase {
 
 		$this->assertNotEquals($url1,$url2);
 
-		$this->assertContains("_800x537_",$url1);
-		$this->assertContains("_50x33_",$url2);
+		$this->assertStringContains("_800x537_",$url1);
+		$this->assertStringContains("_50x33_",$url2);
 	}
 
 	function test_modifier_img_width_and_height(){
