@@ -180,6 +180,10 @@ So the given part of the .htaccess may look like:
 
 Define constant PUPIQ_PROXY_HOSTNAME in config/settings.php:
 
+    definedef("PUPIQ_PROXY_HOSTNAME",$HTTP_REQUEST->getHttpHost() ? $HTTP_REQUEST->getHttpHost() : ATK14_HTTP_HOST);
+
+or in a non-ATK14 application this way:
+
     define("PUPIQ_PROXY_HOSTNAME","your.hostname.com");
 
 License
