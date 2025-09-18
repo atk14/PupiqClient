@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.15] - 2025-09-18
+
+* 0de0ea4 - PupiqUtils::DecodeParams() improved - now considering escaping of comma and equals symbol
+
 ## [1.14.14] - 2024-08-20
 
 * Form widget for PupiqImageField improved
