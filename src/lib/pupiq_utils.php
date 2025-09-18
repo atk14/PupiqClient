@@ -19,7 +19,7 @@ class PupiqUtils {
 		));
 		$_attrs = preg_split("/,/",trim($params));
 
-		array_walk($_attrs, function($v,$k) use (&$out) {
+		array_walk($_attrs, function($v,$k) use (&$out,$placeholder) {
 			$ary = preg_split('/=/',$v);
 			if(sizeof($ary)==1){
 				$k = trim($ary[0]);

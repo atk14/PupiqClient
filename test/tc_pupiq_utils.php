@@ -5,6 +5,15 @@ class TcPupiqUtils extends TcBase {
 		$params = PupiqUtils::DecodeParams('alt=Image,title="Very nice image",data-clickable');
 		$this->assertEquals(array("alt" => "Image", "title" => "Very nice image", "data-clickable" => true),$params);
 
+		$params = PupiqUtils::DecodeParams('alt=Image,title="Very nice image\\, isn\'t it?",data-clickable');
+		$this->assertEquals(array("alt" => "Image", "title" => "Very nice image, isn't it?", "data-clickable" => true),$params);
+
+		$this->assertEquals(array(
+			"equals" => "=",
+			"comma" => ",",
+			"both" => "=,",
+		),PupiqUtils::DecodeParams("equals=\\=,comma=\\,,both=\\=\\,"));
+
 		$params = PupiqUtils::DecodeParams("alt='',title=");
 		$this->assertEquals(array("alt" => "", "title" => ""),$params);
 
