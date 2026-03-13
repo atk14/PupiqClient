@@ -90,10 +90,7 @@ class Pupiq {
 		}elseif(preg_match('/^https?:/',$url_or_filename)){
 			$url = $url_or_filename;
 			if(!$filename){
-				// retrieving $filename from the $url
-				$filename = $url;
-				$filename = preg_replace('/\?.*$/','',$filename); // "https://example.com/images/flower.jpg?size=1" -> "https://example.com/images/flower.jpg"
-				$filename = preg_replace('/^.*\//','',$filename); // "https://example.com/images/flower.jpg" -> "flower.jpg"
+				$filename = $this->_extractFilenameFromUrl($url);
 			}
 		}else{
 			$file["path"] = $url_or_filename;
@@ -660,5 +657,18 @@ class Pupiq {
 		$this->_image_id = null;
 		$this->_watermark = null;
 		$this->_watermark_revision = null;
+	}
+
+	function _extractFilenameFromUrl($url){
+		$filename = $url;
+		$filename = preg_replace('/\?.*$/','',$filename); // "https://example.com/images/flower.jpg?size=1" -> "https://example.com/images/flower.jpg"
+		$filename = preg_replace('/^.*\//','',$filename); // "https://example.com/images/flower.jpg" -> "flower.jpg"
+		$filename = urldecode($filename);
+		$filename = trim($filename);
+		$filename = strtr($filename,[
+			'/' => '_',
+			'\\' => '_',
+		]);
+		return $filename;
 	}
 }
