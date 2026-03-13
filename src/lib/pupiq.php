@@ -28,6 +28,8 @@ class Pupiq {
 	protected $_watermark; // "default", "logo", "text"..., default value is according to the PUPIQ_DEFAULT_WATERMARK_DEFINITION
 	protected $_watermark_revision; // 1, 2, 3...
 
+	protected $_filename;
+
 	static protected $_SupportedImageFormats = array("jpg", "png", "webp", "avif", "gif", "svg");
 	static protected $_ImageFormatsSupportingTransparency = array("png", "svg", "webp", "avif", "gif");
 
@@ -64,9 +66,10 @@ class Pupiq {
 	 *	$image = Pupiq::CreateImage("https://example.com/images/flower.jpg");
 	 *
 	 *	$image = Pupiq::CreateImage("/path/to/flower.jpg");
+	 *	$image = Pupiq::CreateImage("/path/to/uploaded_file.tmp",$err_msg,"flower.jpg");
 	 *	$image = Pupiq::CreateImage(["path" => "/path/to/temp_file", "name" => "flower.jpg"]);
 	 */
-	static function CreateImage($url_or_filename,&$err_msg = ""){
+	static function CreateImage($url_or_filename,&$err_msg = "",$filename = ""){
 		$pupiq = new Pupiq();
 
 		$params = array(
@@ -82,12 +85,23 @@ class Pupiq {
 		if(is_array($url_or_filename)){
 			$file = $url_or_filename + array(
 				"path" => null, // "/path/to/a/tempory_file"
-				"name" => null, // "photo.jpg"
+				"name" => "", // "photo.jpg"
 			);
 		}elseif(preg_match('/^https?:/',$url_or_filename)){
 			$url = $url_or_filename;
+			if(!$filename){
+				// retrieving $filename from the $url
+				$filename = $url;
+				$filename = preg_replace('/\?.*$/','',$filename); // "https://example.com/images/flower.jpg?size=1" -> "https://example.com/images/flower.jpg"
+				$filename = preg_replace('/^.*\//','',$filename); // "https://example.com/images/flower.jpg" -> "flower.jpg"
+			}
 		}else{
 			$file["path"] = $url_or_filename;
+			$file["name"] = $filename;
+		}
+
+		if(isset($file["name"]) && strlen((string)$file["name"])){
+			$filename = (string)$file["name"];
 		}
 
 		$adf = self::_GetApiDataFetcher();
@@ -104,6 +118,10 @@ class Pupiq {
 		}
 
 		$pupiq->setUrl($data["url"]);
+		if($filename){
+			$pupiq->_filename = $filename;
+		}
+
 		return $pupiq;
 	}
 
@@ -241,6 +259,13 @@ class Pupiq {
 		if(preg_match('/\.([a-z]{1,5})$/',$url,$matches)){
 			return $matches[1];
 		}
+	}
+
+	/**
+	 * If the Pupiq image was just created, its filename is available here
+	 */
+	function getFilename(){
+		return $this->_filename;
 	}
 
 	protected function _getBaseHref(){
