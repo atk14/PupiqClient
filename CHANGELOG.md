@@ -3,6 +3,11 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.16] - 2026-04-07
+
+* ff8eebb - Fix - `Pupiq::_extractFilenameFromUrl()` changed to static `Pupiq::_ExtractFilenameFromUrl()`
+* c4dbd9c - When a Pupiq image was just created, its filename can be retrieved using `Pupiq::getFilename()`
+
 ## [1.14.15] - 2025-09-18
 
 * 0de0ea4 - PupiqUtils::DecodeParams() improved - now considering escaping of comma and equals symbol
