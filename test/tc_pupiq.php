@@ -82,13 +82,13 @@ class TcPupiq extends TcBase{
 		$this->assertEquals(null,Pupiq::ToObject(null));
 	}
 
-	function test__extractFilenameFromUrl(){
+	function test__ExtractFilenameFromUrl(){
 		$p = new Pupiq();
 
-		$this->assertEquals("city.jpg",$p->_extractFilenameFromUrl("https://example.com/images/city.jpg"));
-		$this->assertEquals("black hawk.jpg",$p->_extractFilenameFromUrl("https://example.com/images/black%20hawk.jpg"));
-		$this->assertEquals("flower.jpg",$p->_extractFilenameFromUrl("https://example.com/images/flower.jpg?size=1"));
-		$this->assertEquals("",$p->_extractFilenameFromUrl("https://example.com/images/flower.jpg/?size=1"));
-		$this->assertEquals("slash_.jpg",$p->_extractFilenameFromUrl("https://example.com/images/slash%2f.jpg"));
+		$this->assertEquals("city.jpg",Pupiq::_ExtractFilenameFromUrl("https://example.com/images/city.jpg"));
+		$this->assertEquals("black hawk.jpg",Pupiq::_ExtractFilenameFromUrl("https://example.com/images/black%20hawk.jpg"));
+		$this->assertEquals("flower.jpg",Pupiq::_ExtractFilenameFromUrl("https://example.com/images/flower.jpg?size=1"));
+		$this->assertEquals("",Pupiq::_ExtractFilenameFromUrl("https://example.com/images/flower.jpg/?size=1"));
+		$this->assertEquals("slash_.jpg",Pupiq::_ExtractFilenameFromUrl("https://example.com/images/slash%2f.jpg"));
 	}
 }

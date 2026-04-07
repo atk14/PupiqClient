@@ -90,7 +90,7 @@ class Pupiq {
 		}elseif(preg_match('/^https?:/',$url_or_filename)){
 			$url = $url_or_filename;
 			if(!$filename){
-				$filename = $this->_extractFilenameFromUrl($url);
+				$filename = self::_ExtractFilenameFromUrl($url);
 			}
 		}else{
 			$file["path"] = $url_or_filename;
@@ -659,7 +659,7 @@ class Pupiq {
 		$this->_watermark_revision = null;
 	}
 
-	function _extractFilenameFromUrl($url){
+	static function _ExtractFilenameFromUrl($url){
 		$filename = $url;
 		$filename = preg_replace('/\?.*$/','',$filename); // "https://example.com/images/flower.jpg?size=1" -> "https://example.com/images/flower.jpg"
 		$filename = preg_replace('/^.*\//','',$filename); // "https://example.com/images/flower.jpg" -> "flower.jpg"
