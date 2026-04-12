@@ -16,7 +16,7 @@ class TcLinter extends TcBase {
 			if(preg_match('#^('.join('|',$forbidden_folders).')/#',$_file)){
 				continue;
 			}
-			system("php -l ".escapeshellarg($file),$ret_val);
+			system("php -l ".escapeshellarg($file)." > /dev/null",$ret_val);
 			$this->assertEquals(0,$ret_val,"There is syntax error in file $_file");
 		}
 	}
