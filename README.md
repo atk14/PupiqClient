@@ -1,15 +1,19 @@
-Client for [Pupiq](http://i.pupiq.net/)
-=======================================
+Pupiq Client
+============
 
-It's designated to be integrated in ATK14 applications - i.e. applications powered by [ATK14 Framework](http://www.atk14.net).
+PHP client for [Pupiq](https://i.pupiq.net/) — a cloud image and attachment hosting service. Provides image upload, on-the-fly resizing, format conversion, watermarks, dominant colour detection, and local proxy caching.
+
+Designed to integrate with [ATK14 Framework](http://www.atk14.net) applications, but the core `Pupiq` class can be used in any PHP project.
 
 Installation
 ------------
 
-Just use the Composer:
+Use Composer:
 
     cd path/to/your/atk14/project/
     composer require atk14/pupiq-client
+
+Then create symlinks for the ATK14 fields, widgets, and template helpers you need:
 
     ln -s ../../vendor/atk14/pupiq-client/src/app/fields/pupiq_image_field.php app/fields/pupiq_image_field.php
     ln -s ../../vendor/atk14/pupiq-client/src/app/widgets/pupiq_image_input.php app/widgets/pupiq_image_input.php
@@ -26,134 +30,161 @@ Just use the Composer:
     ln -s ../../vendor/atk14/pupiq-client/src/app/helpers/modifier.pupiq_img.php app/helpers/modifier.pupiq_img.php
 
 Configuration
+-------------
+
+Add your Pupiq API key to `config/settings.php`:
+
+    define("PUPIQ_API_KEY", "1234567890abcdefghijklmopqrst");
+
+The following constants are optional:
+
+| Constant | Default | Description |
+|---|---|---|
+| `PUPIQ_API_URL` | `https://i.pupiq.net/api/` | Pupiq API endpoint |
+| `PUPIQ_LANG` | `auto` | Language for API responses (`auto`, `cs`, `en`, …) |
+| `PUPIQ_IMG_HOSTNAME` | derived from `PUPIQ_API_URL` | Hostname used in generated image URLs |
+| `PUPIQ_HTTPS` | auto-detected | Force HTTPS for generated image URLs |
+| `PUPIQ_DEFAULT_WATERMARK_DEFINITION` | `default` | Name of the default watermark definition |
+| `PUPIQ_API_VERIFY_PEER` | `true` | Verify the SSL/TLS certificate of the API server |
+| `PUPIQ_API_VERIFY_PEER_NAME` | `true` | Verify the hostname in the SSL/TLS certificate |
+| `PUPIQ_API_SOCKET_TIMEOUT` | `30.0` | API request timeout in seconds |
+
+Set `PUPIQ_API_VERIFY_PEER` and `PUPIQ_API_VERIFY_PEER_NAME` to `false` only in development environments with self-signed certificates.
+
+Usage in PHP
 ------------
 
-Write your PUPIQ API KEY into config/settings.php
+### Uploading images
 
-    define("PUPIQ_API_KEY","1234567890abcdefghijklmopqrst");
+    // Upload from a URL
+    $image = Pupiq::CreateImage("https://example.com/images/flower.jpg");
 
-Optionally the following constants can be defined:
+    // Upload a local file
+    $image = Pupiq::CreateImage("/path/to/flower.jpg");
 
-    define("PUPIQ_API_URL","https://i.pupiq.net/api/");
-    define("PUPIQ_LANG","cs");
-    define("PUPIQ_IMG_HOSTNAME","i.pupiq.net");
-    define("PUPIQ_HTTPS",true);
-    define("PUPIQ_DEFAULT_WATERMARK_DEFINITION","default");
-    define("PUPIQ_API_VERIFY_PEER",true);
-    define("PUPIQ_API_VERIFY_PEER_NAME",true);
-    define("PUPIQ_API_SOCKET_TIMEOUT",30.0);
+    // Upload a temporary file (e.g. from $_FILES) with a specific filename
+    $image = Pupiq::CreateImage("/path/to/uploaded_file.tmp", $err_msg, "flower.jpg");
+    $image = Pupiq::CreateImage(["path" => "/path/to/temp_file", "name" => "flower.jpg"]);
 
-`PUPIQ_API_VERIFY_PEER` controls whether the SSL/TLS certificate of the Pupiq API server is verified. Default is `true`. Set to `false` only in development environments with self-signed certificates.
+    if (!$image) {
+        // $err_msg contains the error description
+    }
 
-`PUPIQ_API_VERIFY_PEER_NAME` controls whether the hostname in the SSL/TLS certificate is verified against the hostname of the API server. Default is `true`. Set to `false` only in development environments with self-signed certificates.
+    $url = $image->getUrl(); // store this URL in the database
 
-`PUPIQ_API_SOCKET_TIMEOUT` sets the timeout in seconds for API requests. Default is `30.0`.
+### Uploading attachments
+
+    $attachment = Pupiq::CreateAttachment("/path/to/file.pdf", "sample.pdf", $err_msg);
+
+    if (!$attachment) {
+        // $err_msg contains the error description
+    }
+
+    $url = $attachment->getUrl(); // store this URL in the database
+
+### Rendering images from PHP
+
+    $image = Pupiq::ToObject($url); // wrap a stored URL
+
+    echo $image->getImgTag("100x100");
+    // <img src="..." width="100" height="75" alt="" />
+
+    echo $image->getImgTag("!100x100", ["alt" => "Flower", "attrs" => ["class" => "photo"]]);
+    // <img src="..." width="100" height="100" alt="Flower" class="photo" />
+
+    echo $image->getUrl("100x100");   // URL only
+    echo $image->getFormat("100x100,format=webp"); // "webp"
 
 Usage in templates
 ------------------
 
-Consider an image in the original resolution 800x600. In the string variable $img there is URL to the image.
+The following examples assume an 800×600 source image whose URL is stored in `$img`.
 
-    To preserve aspect ratio:
-    {!$img|pupiq_img:"80"} {* 80x60 *}
-    {!$img|pupiq_img:"x30"} {* 40x30 *}
-    {!$img|pupiq_img:"80x80"} {* 80x60 *}
+### Resizing
 
-    To crop the image:
-    {!$img|pupiq_img:"!80x80"} {* 80x80 *}
-    {!$img|pupiq_img:"80x80xcrop"} {* 80x80 *}
+    {* Preserve aspect ratio *}
+    {!$img|pupiq_img:"80"}       {* → 80×60 *}
+    {!$img|pupiq_img:"x30"}      {* → 40×30 *}
+    {!$img|pupiq_img:"80x80"}    {* → 80×60 *}
 
-    Top crop image to the top or bottom line:
-    {!$img|pupiq_img:"80x80xcrop,top"} {* 80x80 *}
-    {!$img|pupiq_img:"80x80xcrop,bottom"} {* 80x80 *}
+### Cropping
 
-    To preserve aspect ratio and fill the background size with a specific colour:
-    {!$img|pupiq_img:"80x80x#ffffff"} {* 80x80, the image is not cropped *}
+    {!$img|pupiq_img:"!80x80"}           {* 80×80, cropped to centre *}
+    {!$img|pupiq_img:"80x80xcrop"}       {* 80×80, cropped to centre *}
+    {!$img|pupiq_img:"80x80xcrop,top"}   {* 80×80, cropped from the top *}
+    {!$img|pupiq_img:"80x80xcrop,bottom"}{* 80×80, cropped from the bottom *}
 
-    To preserve aspect ratio and use transparent background:
-    {!$img|pupiq_img:"80x80xtransparent"} {* 80x80, the image is not cropped *}
+### Background fill
 
-    Keep in mind that transparent background works only on PNG images.
+    {* Fit image and fill background with a colour *}
+    {!$img|pupiq_img:"80x80x#ffffff"}        {* 80×80, white background *}
 
-    Transparent background can be specified with a fallback background colour for JPG images:
-    {!$img|pupiq_img:"80x80xtransparent_or_#ffffff"} {* 80x80, the image is not cropped *}
+    {* Transparent background (PNG/WebP/AVIF only) *}
+    {!$img|pupiq_img:"80x80xtransparent"}
 
-    To add some attributes to img tag:
-    {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
+    {* Transparent with a JPEG fallback colour *}
+    {!$img|pupiq_img:"80x80xtransparent_or_#ffffff"}
 
-    To set a specific format:
+### Format conversion
+
+    {!$img|pupiq_img:"80x80,format=webp"}
     {!$img|pupiq_img:"80x80,format=png"}
     {!$img|pupiq_img:"80x80,format=jpg"}
 
-    To add some attributes prepared as array (got from a controller for example):
+### Enlargement
 
-    class SomeController extends ApplicationController {
-    ....
-        $this->tpl_data["image_attributes_array"] = array(
-            "class" => "image-icon",
-            "title" => "Nice icon",
-            "data-clickable" => true
-        );
-    ....
-    }
+By default images are never magnified beyond their original size.
 
+    {!$img|pupiq_img:"1600x1600"}                    {* → 800×600 (no enlargement) *}
+    {!$img|pupiq_img:"1600x1600,enable_enlargement"} {* → 1600×1200 *}
+
+### Attributes and manual `<img>` tags
+
+    {* Pass HTML attributes as a string *}
+    {!$img|pupiq_img:"80x80,enable_enlargement":"class='image-icon',title='Nice icon',data-clickable"}
+
+    {* Pass HTML attributes as an array from the controller *}
     {!$img|pupiq_img:"80x80,enable_enlargement":$image_attributes_array}
 
-    To magnify:
-    {!$img|pupiq_img:"1600x1600"} {* 800x600, i.e. there is no magnification by default *}
-    {!$img|pupiq_img:"1600x1600,enable_enlargement"} {* 1600x1200 *}
-
-    To render a <img> tag by hand:
+    {* Render tag by hand *}
     <img src="{$img|img_url:"!80x80"}" width="80" height="80" alt="a nice butterfly">
     <img {!$img|img_attrs:"80x80"} alt="a nice butterfly">
 
-    To determine image width and height:
+    {* Determine width and height only *}
     Width is {$img|img_width:"80x80"} pixels
     Height is {$img|img_height:"80x80"} pixels
 
 ### Detecting dominant colours
 
-Helper img_color returns dominant colour in the given image.
+`img_color` returns the dominant colour of an image as a hex string.
 
-    {$img|img_color}
+    {$img|img_color}              {* most dominant colour *}
+    {$img|img_color:"light_muted"}{* a specific palette slot *}
 
-Name of the colour can be specified in the optional 2nd parameter.
+Available palette names: `vibrant`, `light_vibrant`, `dark_vibrant`, `muted`, `light_muted`, `dark_muted`.
 
-Possible names are:
-
-- vibrant
-- light_vibrant
-- dark_vibrant
-- muted
-- light_muted
-- dark_muted
-
-    {$img|img_color:"light_muted"}
-
-In some special cases the requested color may not be returned.
+If the requested slot is unavailable a fallback can be specified:
 
     {$img|img_color:"light_vibrant"|default:"#FFFFFF"}
 
-It may be useful to specify multiple colors in the desired order.
+Multiple slots can be listed in preference order:
 
-    {$img|img_color:"light_vibrant or light_muted or muted"|desired:"#FFFFFF"}
-  
+    {$img|img_color:"light_vibrant or light_muted or muted"|default:"#FFFFFF"}
+
 ### Watermarks
 
-At first you need to create one or more watermark definitions at address https://i.pupiq.net/api/cs/watermark_definitions/create_new/
+Create watermark definitions at `https://i.pupiq.net/api/cs/watermark_definitions/create_new/` first.
 
-The default watermark should be named "default". When you didn't mention the name of the watermark, "default" is used.
-
-    {!$img|pupiq_img:"600x600xcrop,watermark"} {* default *}
-    {!$img|pupiq_img:"600x600xcrop,watermark=default"} {* also default *}
-    {!$img|pupiq_img:"600x600xcrop,watermark=logo"} {* watermark definition named logo is used *}
+    {!$img|pupiq_img:"600x600xcrop,watermark"}          {* default watermark *}
+    {!$img|pupiq_img:"600x600xcrop,watermark=default"}  {* same as above *}
+    {!$img|pupiq_img:"600x600xcrop,watermark=logo"}     {* named watermark *}
 
 Set up local proxy
 ------------------
 
-With local proxy, images uploaded to the Pupiq are being cached and served from your server.
+With a local proxy, images are cached and served directly from your server.
 
-Here you can find guides how to set up a local proxy in your application.
+**1. Create directories and symlinks:**
 
     cd path/to/your/atk14/project/
     mkdir i a
@@ -163,7 +194,7 @@ Here you can find guides how to set up a local proxy in your application.
     ln -s ../vendor/atk14/pupiq-client/src/a/error.php a/error.php
     ln -s ../vendor/atk14/pupiq-client/src/a/.htaccess a/.htaccess
 
-Add following lines to .gitignore:
+**2. Add to `.gitignore`:**
 
     i/*
     !i/.htaccess
@@ -172,12 +203,12 @@ Add following lines to .gitignore:
     !a/.htaccess
     !a/error.php
 
-Prevent dispatcher.php to handle requests starting with /i/ or /a/ by adding these lines before ```RewriteRule (.*) dispatcher.php [L]```
+**3. Exclude proxy paths from the ATK14 dispatcher in `.htaccess`** (add before the `RewriteRule` that points to `dispatcher.php`):
 
     RewriteCond %{REQUEST_URI} !^\/i\/
     RewriteCond %{REQUEST_URI} !^\/a\/
 
-So the given part of the .htaccess may look like:
+Example of the relevant `.htaccess` block:
 
     RewriteCond %{REQUEST_URI} ^\/
     RewriteCond %{REQUEST_URI} !^\/public\/
@@ -187,17 +218,17 @@ So the given part of the .htaccess may look like:
     RewriteCond %{REQUEST_URI} !^\/a\/
     RewriteRule (.*) dispatcher.php [L]
 
-Define constant PUPIQ_PROXY_HOSTNAME in config/settings.php:
+**4. Define `PUPIQ_PROXY_HOSTNAME` in `config/settings.php`:**
 
-    definedef("PUPIQ_PROXY_HOSTNAME",$HTTP_REQUEST->getHttpHost() ? $HTTP_REQUEST->getHttpHost() : ATK14_HTTP_HOST);
+    // ATK14 application
+    define("PUPIQ_PROXY_HOSTNAME", $HTTP_REQUEST->getHttpHost() ?: ATK14_HTTP_HOST);
 
-or in a non-ATK14 application this way:
-
-    define("PUPIQ_PROXY_HOSTNAME","your.hostname.com");
+    // Non-ATK14 application
+    define("PUPIQ_PROXY_HOSTNAME", "your.hostname.com");
 
 License
 -------
 
-Pupiq Client is free software distributed [under the terms of the MIT license](http://www.opensource.org/licenses/mit-license)
+Pupiq Client is free software distributed [under the terms of the MIT license](http://www.opensource.org/licenses/mit-license).
 
 <!-- vim: set et: -->
