@@ -1,6 +1,9 @@
 <?php
 defined("PUPIQ_API_KEY") || define("PUPIQ_API_KEY","123.The_Secret_Should_Be_Here");
 defined("PUPIQ_API_URL") || define("PUPIQ_API_URL","https://i.pupiq.net/api/");
+defined("PUPIQ_API_VERIFY_PEER") || define("PUPIQ_API_VERIFY_PEER",true);
+defined("PUPIQ_API_VERIFY_PEER_NAME") || define("PUPIQ_API_VERIFY_PEER_NAME",true);
+defined("PUPIQ_API_SOCKET_TIMEOUT") || define("PUPIQ_API_SOCKET_TIMEOUT",30.0); // seconds
 defined("PUPIQ_LANG") || define("PUPIQ_LANG","auto"); // "auto", "cs", "en"...
 defined("PUPIQ_IMG_HOSTNAME") || define("PUPIQ_IMG_HOSTNAME",preg_replace('/https?:\/\/([^\/]+)\/.*$/','\1',PUPIQ_API_URL)); // "http://i.pupiq.net/api/" -> "i.pupiq.net"
 defined("PUPIQ_PROXY_HOSTNAME") || define("PUPIQ_PROXY_HOSTNAME",""); // "www.example.com"
@@ -639,8 +642,11 @@ class Pupiq {
 
 		$adf = new ApiDataFetcher(PUPIQ_API_URL,array(
 			"lang" => $lang,
+
+			"verify_peer" => PUPIQ_API_VERIFY_PEER,
+			"verify_peer_name" => PUPIQ_API_VERIFY_PEER_NAME,
 		));
-		$adf->setSocketTimeout(30.0);
+		$adf->setSocketTimeout(PUPIQ_API_SOCKET_TIMEOUT);
 		return $adf;
 	}
 
