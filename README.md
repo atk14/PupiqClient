@@ -1,6 +1,8 @@
 Pupiq Client
 ============
 
+[![Tests](https://github.com/atk14/PupiqClient/actions/workflows/tests.yml/badge.svg)](https://github.com/atk14/PupiqClient/actions/workflows/tests.yml)
+
 PHP client for [Pupiq](https://i.pupiq.net/) — a cloud image and attachment hosting service. Provides image upload, on-the-fly resizing, format conversion, watermarks, dominant colour detection, and local proxy caching.
 
 Designed to integrate with [ATK14 Framework](http://www.atk14.net) applications, but the core `Pupiq` class can be used in any PHP project.
