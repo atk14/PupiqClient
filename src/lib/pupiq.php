@@ -582,7 +582,7 @@ class Pupiq {
 	 * @return int
 	 */
 	function getImageId(){
-		$ary = explode('/',$this->_image_id); // "75c/75c1/" -> ["75c","75c1",""]
+		$ary = explode('/',(string)$this->_image_id); // "75c/75c1/" -> ["75c","75c1",""]
 		if(isset($ary[1])){
 			return (int)hexdec($ary[1]);
 		}
