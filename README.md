@@ -39,6 +39,15 @@ Optionally the following constants can be defined:
     define("PUPIQ_IMG_HOSTNAME","i.pupiq.net");
     define("PUPIQ_HTTPS",true);
     define("PUPIQ_DEFAULT_WATERMARK_DEFINITION","default");
+    define("PUPIQ_API_VERIFY_PEER",true);
+    define("PUPIQ_API_VERIFY_PEER_NAME",true);
+    define("PUPIQ_API_SOCKET_TIMEOUT",30.0);
+
+`PUPIQ_API_VERIFY_PEER` controls whether the SSL/TLS certificate of the Pupiq API server is verified. Default is `true`. Set to `false` only in development environments with self-signed certificates.
+
+`PUPIQ_API_VERIFY_PEER_NAME` controls whether the hostname in the SSL/TLS certificate is verified against the hostname of the API server. Default is `true`. Set to `false` only in development environments with self-signed certificates.
+
+`PUPIQ_API_SOCKET_TIMEOUT` sets the timeout in seconds for API requests. Default is `30.0`.
 
 Usage in templates
 ------------------
