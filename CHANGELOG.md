@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.17] - 2026-07-07
+
+* 240b0c4 - Added constants PUPIQ_API_VERIFY_PEER, PUPIQ_API_VERIFY_PEER_NAME, PUPIQ_API_SOCKET_TIMEOUT
+
 ## [1.14.16] - 2026-04-07
 
 * ff8eebb - Fix - `Pupiq::_extractFilenameFromUrl()` changed to static `Pupiq::_ExtractFilenameFromUrl()`
