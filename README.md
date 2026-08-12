@@ -50,6 +50,7 @@ The following constants are optional:
 | `PUPIQ_API_VERIFY_PEER` | `true` | Verify the SSL/TLS certificate of the API server |
 | `PUPIQ_API_VERIFY_PEER_NAME` | `true` | Verify the hostname in the SSL/TLS certificate |
 | `PUPIQ_API_SOCKET_TIMEOUT` | `30.0` | API request timeout in seconds |
+| `PUPIQ_API_IP_ADDRESS` | `` (empty) | IP address to use if it cannot be determined from `PUPIQ_API_URL` |
 
 Set `PUPIQ_API_VERIFY_PEER` and `PUPIQ_API_VERIFY_PEER_NAME` to `false` only in development environments with self-signed certificates.
 
