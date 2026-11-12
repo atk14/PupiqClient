@@ -1,20 +1,36 @@
 <?php
-class PupiqAttachment{
+class PupiqAttachment {
 
-	var $_url = "";
+	protected $_url = "";
 
 	function __construct($url){
+		$this->_url = $this->_replaceHostname($url,PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME);
+	}
+
+	function _replaceHostname($url,$hostname = null,$ssl = null){
+		if(is_null($hostname)){
+			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
+		}
+		if(is_null($ssl)){
+			$ssl = PUPIQ_HTTPS;
+		}
 		// pokud to vypada jako zname URL, vrazime tam spravny hostname
 		if(preg_match('/^https?:\/\/[^\/]+(\/a\/.+)$/',$url,$matches)){
 			class_exists("Pupiq"); // autoload tridy Pupiq (tam jsou totiz definovany potrebne konstanty PUPIQ_*)
-			$hostname = PUPIQ_PROXY_HOSTNAME ? PUPIQ_PROXY_HOSTNAME : PUPIQ_IMG_HOSTNAME;
-			$url = "http".(PUPIQ_HTTPS ? "s" : "")."://$hostname$matches[1]";
+			$url = "http".($ssl ? "s" : "")."://$hostname$matches[1]";
 		}
-
-		$this->_url = $url;
+		return $url;
 	}
 
-	function getUrl(){ return $this->_url; }
+	function getUrl($options = []){
+		$options += [
+			"direct" => false,
+		];
+		if($options["direct"]){
+			return $this->_replaceHostname($this->_url,PUPIQ_IMG_HOSTNAME,PUPIQ_HTTPS);
+		}
+		return $this->_url;
+	}
 
 	/**
 	 * $attachment = new PupiqAttachment("http://.../sample.pdf");
