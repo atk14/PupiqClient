@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.20] - 2026-11-17
+
+* b7df03f - Fix
+
 ## [1.14.19] - 2026-11-12
 
 * 5dc06a3 - PupiqAttachment::getUrl() now supports the "direct" option to bypass PUPIQ_PROXY_HOSTNAME
