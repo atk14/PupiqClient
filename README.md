@@ -229,6 +229,13 @@ Example of the relevant `.htaccess` block:
     // Non-ATK14 application
     define("PUPIQ_PROXY_HOSTNAME", "your.hostname.com");
 
+**5. Getting the direct URL bypassing the proxy:**
+
+When `PUPIQ_PROXY_HOSTNAME` is set, `PupiqAttachment::getUrl()` returns a URL pointing at the proxy hostname. To get the original URL served directly from Pupiq (e.g. to fetch the file content server-side), pass the `direct` option:
+
+    $attachment->getUrl();                     // "http://your.hostname.com/a/..."
+    $attachment->getUrl(["direct" => true]);   // "http://i.pupiq.net/a/..."
+
 License
 -------
 
