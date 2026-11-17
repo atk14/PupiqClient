@@ -1,4 +1,6 @@
 <?php
+class_exists("Pupiq"); // to load constants
+
 class PupiqAttachment{
 
 	var $_url = "";
