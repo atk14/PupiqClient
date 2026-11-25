@@ -3,6 +3,10 @@ Change Log
 
 All notable changes to PupiqClient will be documented in this file.
 
+## [1.14.21] - 2026-11-25
+
+* 2e2d124 - Added optional &$filename reference parameter to Pupiq::downloadOriginal()
+
 ## [1.14.20] - 2026-11-17
 
 * b7df03f - Fix
