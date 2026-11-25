@@ -542,16 +542,19 @@ class Pupiq {
 	/**
 	 * Returns the content of the original file
 	 *
-	 *	$original_content = $pupiq->downloadOriginal($headers);
+	 *	$original_content = $pupiq->downloadOriginal($headers,$filename);
 	 *  //
 	 *	$response->setHeaders($headers); // ['Content-Type' => 'image/jpeg', 'Content-Disposition' => 'attachment; filename="2_29910_29f57.jpg"', 'Content-Length' => '208331', ...]
 	 *	$response->write($original_content);
+	 *	echo $filename; // "2_29910_29f57.jpg"
 	 */
-	function downloadOriginal(&$http_headers = array()){
+	function downloadOriginal(&$http_headers = array(),&$filename = ""){
 		$original_d = $this->getOriginalInfo();
+		$filename = $original_d["filename"];
+
 		$http_headers = array();
 		$http_headers["Content-Type"] = $original_d["mime_type"];
-		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$original_d["filename"]);
+		$http_headers["Content-Disposition"] = sprintf('attachment; filename="%s"',$filename);
 		$http_headers["Content-Length"] = $original_d["filesize"];
 
 		$adf = self::_GetApiDataFetcher();
